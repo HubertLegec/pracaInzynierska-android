@@ -6,13 +6,13 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 /**
  * Created by Hubert on 19.03.2016.
  */
-@Rest(rootUrl = "http://localhost:8080",converters = {MappingJackson2HttpMessageConverter.class})
+@Rest(rootUrl = "http://localhost:4212",converters = {MappingJackson2HttpMessageConverter.class})
 public interface PastecRestClient {
     @Put("/index/images/{imageID}")
-    AddRemoveResponse insertNewImage(@Path int imageID, @Body Object image);
+    AddRemoveMessage insertNewImage(@Path int imageID, @Body Object image);
 
     @Delete("/index/images/{imageID}")
-    AddRemoveResponse removeImage(@Path int imageID);
+    AddRemoveMessage removeImage(@Path int imageID);
 
     @Post("/")
     SimpleMessage ping();
