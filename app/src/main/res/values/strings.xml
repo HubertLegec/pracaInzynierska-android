@@ -19,4 +19,5 @@
     <string name="retrieving">Searching…</string>
     <string name="recognized_image">Recognized image</string>
     <string name="description">Description</string>
+    <string name="action_settings">Settings</string>
 </resources>

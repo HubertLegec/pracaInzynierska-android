@@ -1,6 +1,8 @@
 package com.legec.imgsearch.app;
 
 import android.app.Activity;
+import android.content.Intent;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
@@ -9,12 +11,12 @@ import org.androidannotations.annotations.EActivity;
 public class StartActivity extends Activity {
 
     @AfterViews
-    public void initViews(){
+    void initViews() {
         waitMethod();
     }
 
     @Background
-    void waitMethod(){
+    void waitMethod() {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -26,6 +28,7 @@ public class StartActivity extends Activity {
             }
         });
         t.run();
-       // CameraTooActivity_.intent(this).start();
+        Intent intent = new Intent(this, CameraIntentActivity_.class);
+        startActivity(intent);
     }
 }
