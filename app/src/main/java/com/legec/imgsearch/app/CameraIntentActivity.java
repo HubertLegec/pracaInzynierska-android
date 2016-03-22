@@ -115,8 +115,7 @@ public class CameraIntentActivity extends Activity implements RecyclerViewClickP
                 }
             };
     private CameraDevice mCameraDevice;
-    private CameraDevice.StateCallback mCameraDeviceStateCallback
-            = new CameraDevice.StateCallback() {
+    private CameraDevice.StateCallback mCameraDeviceStateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(CameraDevice camera) {
             mCameraDevice = camera;
@@ -193,14 +192,6 @@ public class CameraIntentActivity extends Activity implements RecyclerViewClickP
     private static File mImageFile;
     private ImageReader mImageReader;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener =
-            new ImageReader.OnImageAvailableListener() {
-                @Override
-                public void onImageAvailable(ImageReader reader) {
-                    mBackgroundHandler.post(new ImageSaver(mActivity, reader.acquireNextImage(), mUiHandler,
-                            mCaptureResult, mCameraCharacteristics));
-                }
-            };
-    private final ImageReader.OnImageAvailableListener mOnRawImageAvailableListener =
             new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
