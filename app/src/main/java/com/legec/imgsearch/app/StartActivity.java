@@ -3,6 +3,8 @@ package com.legec.imgsearch.app;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.legec.imgsearch.app.activity.CameraActivity_;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;

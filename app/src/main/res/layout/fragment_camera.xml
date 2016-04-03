@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cameraFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.legec.imgsearch.app.AutoFitTextureView
-        android:id="@+id/texture"
+    <com.legec.imgsearch.app.utils.AutoFitTextureView
+        android:id="@+id/mTextureView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 
     <Button
-        android:id="@+id/picture"
+        android:id="@+id/pictureButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -20,7 +21,7 @@
         android:text="@string/picture" />
 
     <ImageButton
-        android:id="@+id/info"
+        android:id="@+id/infoButton"
         style="@android:style/Widget.Material.Light.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.legec.imgsearch.app;
+package com.legec.imgsearch.app.utils;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.TextureView;
 
 /**
@@ -54,6 +55,7 @@ public class AutoFitTextureView extends TextureView {
         }
         mRatioWidth = width;
         mRatioHeight = height;
+        Log.i("SET ASPECT RATIO:", "w:" + width + " h:" + height);
         requestLayout();
     }
 
@@ -62,6 +64,7 @@ public class AutoFitTextureView extends TextureView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
+        Log.i("ON MEASURE:", "w:" + width + " h:" + height);
         if (0 == mRatioWidth || 0 == mRatioHeight) {
             setMeasuredDimension(width, height);
         } else {
