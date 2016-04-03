@@ -131,7 +131,7 @@ public class CameraFragment extends Fragment
     AutoFitTextureView mTextureView;
 
     @ViewById
-    Button pictureButton;
+    ImageButton pictureButton;
 
     @ViewById
     ImageButton infoButton;
@@ -453,9 +453,13 @@ public class CameraFragment extends Fragment
                 // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
                 // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
                 // garbage capture data.
+                for(Size s : map.getOutputSizes(SurfaceTexture.class)) {
+                    Log.i("CHOICES!!!!!!", s.toString());
+                }
                 mPreviewSize = Camera.chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class),
                         rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
                         maxPreviewHeight, largest);
+                Log.i("CHOICE", mPreviewSize.toString());
 
                 // We fit the aspect ratio of TextureView to the size of preview we picked.
                 int orientation = getResources().getConfiguration().orientation;
