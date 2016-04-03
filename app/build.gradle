@@ -65,3 +65,9 @@ apt {
         androidManifestFile variant.outputs[0]?.processResources?.manifestFile
     }
 }
+
+android {
+    lintOptions {
+        abortOnError false
+    }
+}

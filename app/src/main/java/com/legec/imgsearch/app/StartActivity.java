@@ -28,7 +28,7 @@ public class StartActivity extends Activity {
             }
         });
         t.run();
-        Intent intent = new Intent(this, CameraIntentActivity_.class);
+        Intent intent = new Intent(this, CameraActivity_.class);
         startActivity(intent);
     }
 }
