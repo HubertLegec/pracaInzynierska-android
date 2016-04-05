@@ -24,9 +24,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
-import android.graphics.Matrix;
 import android.graphics.Point;
-import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -51,10 +49,10 @@ import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.legec.imgsearch.app.activity.ResultActivity_;
 import com.legec.imgsearch.app.camera.Camera;
 import com.legec.imgsearch.app.utils.AutoFitTextureView;
 import com.legec.imgsearch.app.R;
@@ -108,7 +106,7 @@ public class CameraFragment extends Fragment
 
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture texture, int width, int height) {
-            configureTransform(width, height);
+            camera.getTransformMatrix(width, height, getActivity(), mTextureView);
         }
 
         @Override
@@ -145,11 +143,6 @@ public class CameraFragment extends Fragment
      * A reference to the opened {@link CameraDevice}.
      */
     private CameraDevice mCameraDevice;
-
-    /**
-     * The {@link Size} of camera preview.
-     */
-    private Size mPreviewSize;
 
     /**
      * {@link CameraDevice.StateCallback} is called when {@link CameraDevice} changes its state.
@@ -205,7 +198,8 @@ public class CameraFragment extends Fragment
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-            mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
+            ImageSaver.setImage(reader.acquireNextImage());
+            ResultActivity_.intent(getActivity()).start();
         }
 
     };
@@ -453,22 +447,20 @@ public class CameraFragment extends Fragment
                 // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
                 // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
                 // garbage capture data.
-                for(Size s : map.getOutputSizes(SurfaceTexture.class)) {
-                    Log.i("CHOICES!!!!!!", s.toString());
-                }
-                mPreviewSize = Camera.chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class),
+                camera.chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class),
                         rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
                         maxPreviewHeight, largest);
-                Log.i("CHOICE", mPreviewSize.toString());
 
                 // We fit the aspect ratio of TextureView to the size of preview we picked.
                 int orientation = getResources().getConfiguration().orientation;
                 if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     mTextureView.setAspectRatio(
-                            mPreviewSize.getWidth(), mPreviewSize.getHeight());
+                            camera.getmPreviewSize().getWidth(),
+                            camera.getmPreviewSize().getHeight());
                 } else {
                     mTextureView.setAspectRatio(
-                            mPreviewSize.getHeight(), mPreviewSize.getWidth());
+                            camera.getmPreviewSize().getHeight(),
+                            camera.getmPreviewSize().getWidth());
                 }
 
                 // Check if the flash is supported.
@@ -498,7 +490,7 @@ public class CameraFragment extends Fragment
             return;
         }
         setUpCameraOutputs(width, height);
-        configureTransform(width, height);
+        camera.getTransformMatrix(width, height, getActivity(), mTextureView);
         Activity activity = getActivity();
         CameraManager manager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
         try {
@@ -570,7 +562,7 @@ public class CameraFragment extends Fragment
             assert texture != null;
 
             // We configure the size of default buffer to be the size of camera preview we want.
-            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+            texture.setDefaultBufferSize(camera.getmPreviewSize().getWidth(), camera.getmPreviewSize().getHeight());
 
             // This is the output Surface we need to start preview.
             Surface surface = new Surface(texture);
@@ -620,40 +612,6 @@ public class CameraFragment extends Fragment
             e.printStackTrace();
         }
     }
-
-    /**
-     * Configures the necessary {@link Matrix} transformation to `mTextureView`.
-     * This method should be called after the camera preview size is determined in
-     * setUpCameraOutputs and also the size of `mTextureView` is fixed.
-     *
-     * @param viewWidth  The width of `mTextureView`
-     * @param viewHeight The height of `mTextureView`
-     */
-    private void configureTransform(int viewWidth, int viewHeight) {
-        Activity activity = getActivity();
-        if (null == mTextureView || null == mPreviewSize || null == activity) {
-            return;
-        }
-        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        Matrix matrix = new Matrix();
-        RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
-        RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
-        float centerX = viewRect.centerX();
-        float centerY = viewRect.centerY();
-        if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
-            bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
-            matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
-            float scale = Math.max(
-                    (float) viewHeight / mPreviewSize.getHeight(),
-                    (float) viewWidth / mPreviewSize.getWidth());
-            matrix.postScale(scale, scale, centerX, centerY);
-            matrix.postRotate(90 * (rotation - 2), centerX, centerY);
-        } else if (Surface.ROTATION_180 == rotation) {
-            matrix.postRotate(180, centerX, centerY);
-        }
-        mTextureView.setTransform(matrix);
-    }
-
 
     /**
      * Initiate a still image capture.

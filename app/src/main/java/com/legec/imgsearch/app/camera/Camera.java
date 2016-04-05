@@ -1,5 +1,8 @@
 package com.legec.imgsearch.app.camera;
 
+import android.app.Activity;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
@@ -7,6 +10,7 @@ import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Surface;
+import android.view.TextureView;
 
 import com.legec.imgsearch.app.utils.CompareSizesByArea;
 
@@ -59,6 +63,9 @@ public class Camera {
     /** ID of the current {@link CameraDevice}. */
     private String mCameraId;
 
+    /** The {@link Size} of camera preview. */
+    private Size mPreviewSize;
+
 
     public String getmCameraId() {
         return mCameraId;
@@ -91,6 +98,14 @@ public class Camera {
         }
     }
 
+    public Size getmPreviewSize() {
+        return mPreviewSize;
+    }
+
+    public void setmPreviewSize(Size mPreviewSize) {
+        this.mPreviewSize = mPreviewSize;
+    }
+
     /**
      * Given {@code choices} of {@code Size}s supported by a camera, choose the smallest one that
      * is at least as large as the respective texture view size, and that is at most as large as the
@@ -105,9 +120,8 @@ public class Camera {
      * @param maxWidth          The maximum width that can be chosen
      * @param maxHeight         The maximum height that can be chosen
      * @param aspectRatio       The aspect ratio
-     * @return The optimal {@code Size}, or an arbitrary one if none were big enough
      */
-    public static Size chooseOptimalSize(Size[] choices, int textureViewWidth,
+    public void chooseOptimalSize(Size[] choices, int textureViewWidth,
                                           int textureViewHeight, int maxWidth, int maxHeight, Size aspectRatio) {
 
         // Collect the supported resolutions that are at least as big as the preview Surface
@@ -131,13 +145,50 @@ public class Camera {
         // Pick the smallest of those big enough. If there is no one big enough, pick the
         // largest of those not big enough.
         if (bigEnough.size() > 0) {
-            return Collections.min(bigEnough, new CompareSizesByArea());
+            mPreviewSize =  Collections.min(bigEnough, new CompareSizesByArea());
         } else if (notBigEnough.size() > 0) {
-            return Collections.max(notBigEnough, new CompareSizesByArea());
+            mPreviewSize = Collections.max(notBigEnough, new CompareSizesByArea());
         } else {
             Log.e(TAG, "Couldn't find any suitable preview size");
-            return choices[0];
+            mPreviewSize = choices[0];
         }
+    }
+
+
+    /**
+     * Configures the necessary {@link Matrix} transformation to `mTextureView`.
+     * This method should be called after the camera preview size is determined in
+     * setUpCameraOutputs and also the size of `mTextureView` is fixed.
+     *
+     * @param viewWidth  The width of `mTextureView`
+     * @param viewHeight The height of `mTextureView`
+     * @param activity Current activity
+     * @param mTextureView Texture view
+     */
+    public void getTransformMatrix(int viewHeight, int viewWidth, Activity activity, TextureView mTextureView){
+        if (null == mTextureView || null == mPreviewSize || null == activity) {
+            return;
+        }
+        int previewWidth = mPreviewSize.getWidth();
+        int previewHeight = mPreviewSize.getHeight();
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        Matrix matrix = new Matrix();
+        RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
+        RectF bufferRect = new RectF(0, 0, previewHeight, previewWidth);
+        float centerX = viewRect.centerX();
+        float centerY = viewRect.centerY();
+        if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
+            bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
+            matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
+            float scale = Math.max(
+                    (float) viewHeight / previewHeight,
+                    (float) viewWidth / previewWidth);
+            matrix.postScale(scale, scale, centerX, centerY);
+            matrix.postRotate(90 * (rotation - 2), centerX, centerY);
+        } else if (Surface.ROTATION_180 == rotation) {
+            matrix.postRotate(180, centerX, centerY);
+        }
+        mTextureView.setTransform(matrix);
     }
 
 

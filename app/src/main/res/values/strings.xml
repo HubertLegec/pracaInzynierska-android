@@ -5,6 +5,8 @@
     <string name="no_result">No result !</string>
     <string name="no_good_result">No good result</string>
     <string name="name">Name</string>
+    <string name="back">Back</string>
+    <string name="rebegin">Rebegin</string>
     <string name="service_down">Service down.</string>
     <string name="retrieving">Searching…</string>
     <string name="recognized_image">Recognized image</string>
@@ -19,7 +21,7 @@
             Snap an image in a well lighted place.
         Try to avoid reflections.
         Tap the screen to trigger the autofocus.
-        The image'll be send to server and you'll get matches.
+        The image\'ll be send to server and you\'ll get matches.
 
         ]]>
     </string>
