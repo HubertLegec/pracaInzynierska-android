@@ -18,17 +18,11 @@ public class StartActivity extends Activity {
 
     @Background
     void waitMethod() {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000, 0);
-                } catch (InterruptedException e) {
-
-                }
-            }
-        });
-        t.run();
+        try {
+            Thread.sleep(2000, 0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         CameraActivity_.intent(this).start();
     }
 }
