@@ -1,8 +1,5 @@
 package com.legec.imgsearch.app.result;
 
-/**
- * Created by hubert.legec on 2016-04-03.
- */
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;

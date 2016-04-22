@@ -1,8 +1,5 @@
 package com.legec.imgsearch.app.utils;
 
-/**
- * Created by hubert.legec on 2016-04-03.
- */
 
 import android.media.Image;
 import java.io.File;

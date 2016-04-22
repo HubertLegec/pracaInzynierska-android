@@ -5,9 +5,6 @@ import org.androidannotations.rest.spring.api.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-/**
- * Created by Hubert on 19.03.2016.
- */
 @Rest(rootUrl = "http://localhost:4212",converters = {MappingJackson2HttpMessageConverter.class})
 public interface PastecRestClient {
     @Put("/index/images/{imageID}")

@@ -1,9 +1,5 @@
 package com.legec.imgsearch.app.utils;
 
-/**
- * Created by hubert.legec on 2016-04-03.
- */
-
 import android.util.Size;
 
 import java.util.Comparator;

@@ -2,7 +2,6 @@ package com.legec.imgsearch.app.result;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,9 +13,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.concurrent.Semaphore;
 
-/**
- * Created by hubert.legec on 2016-04-03.
- */
+
 @EViewGroup(R.layout.result_element)
 public class ResultItemView extends LinearLayout {
 
@@ -37,7 +34,7 @@ public class ResultItemView extends LinearLayout {
         description.setText(person.description);
         try {
             semaphore.acquire();
-            final Bitmap bitmap = imageBitmap;
+            Bitmap bitmap = imageBitmap;
             semaphore.release();
             image.setImageBitmap(bitmap);
         } catch (InterruptedException e){

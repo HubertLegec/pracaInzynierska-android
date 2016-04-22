@@ -1,11 +1,13 @@
 package com.legec.imgsearch.app.camera;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.Fragment;
 import android.graphics.Matrix;
 import android.graphics.RectF;
-import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
+import android.support.v13.app.FragmentCompat;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -13,17 +15,17 @@ import android.view.Surface;
 import android.view.TextureView;
 
 import com.legec.imgsearch.app.utils.CompareSizesByArea;
+import com.legec.imgsearch.app.utils.ConfirmationDialog;
+import com.legec.imgsearch.app.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by hubert.legec on 2016-04-03.
- */
 public class Camera {
     public static final int REQUEST_CAMERA_PERMISSION = 1;
     public static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    public static final String FRAGMENT_DIALOG = "dialog";
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -32,30 +34,13 @@ public class Camera {
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
-    /** Tag for the {@link Log}. */
-    public static final String TAG = "CameraFragment";
-
-    /** Camera state: Showing camera preview. */
-    public static final int STATE_PREVIEW = 0;
-
-    /** Camera state: Waiting for the focus to be locked. */
-    public static final int STATE_WAITING_LOCK = 1;
-
-    /** Camera state: Waiting for the exposure to be precapture state. */
-    public static final int STATE_WAITING_PRECAPTURE = 2;
-
-    /** Camera state: Waiting for the exposure state to be something other than precapture. */
-    public static final int STATE_WAITING_NON_PRECAPTURE = 3;
-
-    /** Camera state: Picture was taken. */
-    public static final int STATE_PICTURE_TAKEN = 4;
 
     /**
      * The current state of camera state for taking pictures.
      *
      * see #mCaptureCallback
      */
-    private int mState = STATE_PREVIEW;
+    private int mState = CameraStatus.STATE_PREVIEW;
 
     /** Whether the current camera device supports Flash or not. */
     private boolean mFlashSupported;
@@ -149,7 +134,7 @@ public class Camera {
         } else if (notBigEnough.size() > 0) {
             mPreviewSize = Collections.max(notBigEnough, new CompareSizesByArea());
         } else {
-            Log.e(TAG, "Couldn't find any suitable preview size");
+            Log.e(Constants.CAMERA_FRAGMENT_TAG, "Couldn't find any suitable preview size");
             mPreviewSize = choices[0];
         }
     }
@@ -189,6 +174,16 @@ public class Camera {
             matrix.postRotate(180, centerX, centerY);
         }
         mTextureView.setTransform(matrix);
+    }
+
+
+    public static void requestCameraPermission(Fragment fragment) {
+        if (FragmentCompat.shouldShowRequestPermissionRationale(fragment, Manifest.permission.CAMERA)) {
+            new ConfirmationDialog().show(fragment.getFragmentManager(), FRAGMENT_DIALOG);
+        } else {
+            FragmentCompat.requestPermissions(fragment, new String[]{Manifest.permission.CAMERA},
+                    Camera.REQUEST_CAMERA_PERMISSION);
+        }
     }
 
 

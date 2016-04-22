@@ -1,9 +1,5 @@
 package com.legec.imgsearch.app.utils;
 
-/**
- * Created by hubert.legec on 2016-04-03.
- */
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -1,19 +1,3 @@
-/*
- * Copyright 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.legec.imgsearch.app.fragment;
 
 import android.Manifest;
@@ -37,7 +21,6 @@ import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.ImageReader;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
@@ -54,10 +37,11 @@ import android.widget.Toast;
 
 import com.legec.imgsearch.app.activity.ResultActivity_;
 import com.legec.imgsearch.app.camera.Camera;
+import com.legec.imgsearch.app.camera.CameraStatus;
 import com.legec.imgsearch.app.utils.AutoFitTextureView;
 import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.utils.CompareSizesByArea;
-import com.legec.imgsearch.app.utils.ConfirmationDialog;
+import com.legec.imgsearch.app.utils.Constants;
 import com.legec.imgsearch.app.utils.ErrorDialog;
 import com.legec.imgsearch.app.utils.ImageSaver;
 
@@ -65,7 +49,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.Semaphore;
@@ -75,22 +58,7 @@ import java.util.concurrent.TimeUnit;
 public class CameraFragment extends Fragment
         implements FragmentCompat.OnRequestPermissionsResultCallback {
 
-    private static final String FRAGMENT_DIALOG = "dialog";
 
-    /**
-     * Tag for the {@link Log}.
-     */
-    private static final String TAG = "CameraFragment";
-
-    /**
-     * Max preview width that is guaranteed by Camera2 API
-     */
-    private static final int MAX_PREVIEW_WIDTH = 2560;
-
-    /**
-     * Max preview height that is guaranteed by Camera2 API
-     */
-    private static final int MAX_PREVIEW_HEIGHT = 1440;
 
     /**
      * {@link TextureView.SurfaceTextureListener} handles several lifecycle events on a
@@ -186,9 +154,6 @@ public class CameraFragment extends Fragment
     /** An {@link ImageReader} that handles still image capture. */
     private ImageReader mImageReader;
 
-    /** This is the output file for our picture. */
-    private File mFile;
-
     /**
      * This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
      * still image is ready to be saved.
@@ -220,11 +185,11 @@ public class CameraFragment extends Fragment
 
         private void process(CaptureResult result) {
             switch (camera.getmState()) {
-                case Camera.STATE_PREVIEW: {
+                case CameraStatus.STATE_PREVIEW: {
                     // We have nothing to do when the camera preview is working normally.
                     break;
                 }
-                case Camera.STATE_WAITING_LOCK: {
+                case CameraStatus.STATE_WAITING_LOCK: {
                     Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
                     if (afState == null) {
                         captureStillPicture();
@@ -234,7 +199,7 @@ public class CameraFragment extends Fragment
                         Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                         if (aeState == null ||
                                 aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
-                            camera.setmState(Camera.STATE_PICTURE_TAKEN);
+                            camera.setmState(CameraStatus.STATE_PICTURE_TAKEN);
                             captureStillPicture();
                         } else {
                             runPrecaptureSequence();
@@ -242,21 +207,21 @@ public class CameraFragment extends Fragment
                     }
                     break;
                 }
-                case Camera.STATE_WAITING_PRECAPTURE: {
+                case CameraStatus.STATE_WAITING_PRECAPTURE: {
                     // CONTROL_AE_STATE can be null on some devices
                     Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                     if (aeState == null ||
                             aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE ||
                             aeState == CaptureRequest.CONTROL_AE_STATE_FLASH_REQUIRED) {
-                        camera.setmState(Camera.STATE_WAITING_NON_PRECAPTURE);
+                        camera.setmState(CameraStatus.STATE_WAITING_NON_PRECAPTURE);
                     }
                     break;
                 }
-                case Camera.STATE_WAITING_NON_PRECAPTURE: {
+                case CameraStatus.STATE_WAITING_NON_PRECAPTURE: {
                     // CONTROL_AE_STATE can be null on some devices
                     Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                     if (aeState == null || aeState != CaptureResult.CONTROL_AE_STATE_PRECAPTURE) {
-                        camera.setmState(Camera.STATE_PICTURE_TAKEN);
+                        camera.setmState(CameraStatus.STATE_PICTURE_TAKEN);
                         captureStillPicture();
                     }
                     break;
@@ -314,12 +279,6 @@ public class CameraFragment extends Fragment
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         startBackgroundThread();
@@ -342,22 +301,13 @@ public class CameraFragment extends Fragment
         super.onPause();
     }
 
-    private void requestCameraPermission() {
-        if (FragmentCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-            new ConfirmationDialog().show(getChildFragmentManager(), FRAGMENT_DIALOG);
-        } else {
-            FragmentCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
-                    Camera.REQUEST_CAMERA_PERMISSION);
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == Camera.REQUEST_CAMERA_PERMISSION) {
             if (grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 ErrorDialog.newInstance(getString(R.string.request_permission))
-                        .show(getChildFragmentManager(), FRAGMENT_DIALOG);
+                        .show(getChildFragmentManager(), Camera.FRAGMENT_DIALOG);
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -419,7 +369,7 @@ public class CameraFragment extends Fragment
                         }
                         break;
                     default:
-                        Log.e(TAG, "Display rotation is invalid: " + displayRotation);
+                        Log.e(Constants.CAMERA_FRAGMENT_TAG, "Display rotation is invalid: " + displayRotation);
                 }
 
                 Point displaySize = new Point();
@@ -436,12 +386,12 @@ public class CameraFragment extends Fragment
                     maxPreviewHeight = displaySize.x;
                 }
 
-                if (maxPreviewWidth > MAX_PREVIEW_WIDTH) {
-                    maxPreviewWidth = MAX_PREVIEW_WIDTH;
+                if (maxPreviewWidth > Constants.MAX_PREVIEW_WIDTH) {
+                    maxPreviewWidth = Constants.MAX_PREVIEW_WIDTH;
                 }
 
-                if (maxPreviewHeight > MAX_PREVIEW_HEIGHT) {
-                    maxPreviewHeight = MAX_PREVIEW_HEIGHT;
+                if (maxPreviewHeight > Constants.MAX_PREVIEW_HEIGHT) {
+                    maxPreviewHeight = Constants.MAX_PREVIEW_HEIGHT;
                 }
 
                 // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
@@ -476,7 +426,7 @@ public class CameraFragment extends Fragment
             // Currently an NPE is thrown when the Camera2API is used but not supported on the
             // device this code runs.
             ErrorDialog.newInstance(getString(R.string.camera_error))
-                    .show(getChildFragmentManager(), FRAGMENT_DIALOG);
+                    .show(getChildFragmentManager(), Camera.FRAGMENT_DIALOG);
         }
     }
 
@@ -486,7 +436,7 @@ public class CameraFragment extends Fragment
     private void openCamera(int width, int height) {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
-            requestCameraPermission();
+            Camera.requestCameraPermission(this);
             return;
         }
         setUpCameraOutputs(width, height);
@@ -623,7 +573,7 @@ public class CameraFragment extends Fragment
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
                     CameraMetadata.CONTROL_AF_TRIGGER_START);
             // Tell #mCaptureCallback to wait for the lock.
-            camera.setmState(Camera.STATE_WAITING_LOCK);
+            camera.setmState(CameraStatus.STATE_WAITING_LOCK);
             mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
                     mBackgroundHandler);
         } catch (CameraAccessException e) {
@@ -641,7 +591,7 @@ public class CameraFragment extends Fragment
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
                     CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START);
             // Tell #mCaptureCallback to wait for the precapture sequence to be set.
-            camera.setmState(Camera.STATE_WAITING_PRECAPTURE);
+            camera.setmState(CameraStatus.STATE_WAITING_PRECAPTURE);
             mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
                     mBackgroundHandler);
         } catch (CameraAccessException e) {
@@ -680,8 +630,7 @@ public class CameraFragment extends Fragment
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
-                    showToast("Saved: " + mFile);
-                    Log.d(TAG, mFile.toString());
+
                     unlockFocus();
                 }
             };
@@ -706,7 +655,7 @@ public class CameraFragment extends Fragment
             mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
                     mBackgroundHandler);
             // After this, the camera will go back to the normal state of preview.
-            camera.setmState(Camera.STATE_PREVIEW);
+            camera.setmState(CameraStatus.STATE_PREVIEW);
             mCaptureSession.setRepeatingRequest(mPreviewRequest, mCaptureCallback,
                     mBackgroundHandler);
         } catch (CameraAccessException e) {

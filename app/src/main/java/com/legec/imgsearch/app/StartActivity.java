@@ -1,7 +1,6 @@
 package com.legec.imgsearch.app;
 
 import android.app.Activity;
-import android.content.Intent;
 
 import com.legec.imgsearch.app.activity.CameraActivity_;
 
@@ -30,7 +29,6 @@ public class StartActivity extends Activity {
             }
         });
         t.run();
-        Intent intent = new Intent(this, CameraActivity_.class);
-        startActivity(intent);
+        CameraActivity_.intent(this).start();
     }
 }

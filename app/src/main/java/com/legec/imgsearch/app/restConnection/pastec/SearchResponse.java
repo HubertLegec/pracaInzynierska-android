@@ -7,9 +7,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Hubert on 19.03.2016.
- */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"image_ids", "type"})
 public class SearchResponse extends SimpleMessage {
