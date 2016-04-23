@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Matrix;
 import android.graphics.RectF;
+import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.support.v13.app.FragmentCompat;
 import android.util.Log;
@@ -35,12 +37,8 @@ public class Camera {
     }
 
 
-    /**
-     * The current state of camera state for taking pictures.
-     *
-     * see #mCaptureCallback
-     */
-    private int mState = CameraStatus.STATE_PREVIEW;
+    /** The current state of camera state for taking pictures. */
+    private CameraStatus mState = CameraStatus.STATE_PREVIEW;
 
     /** Whether the current camera device supports Flash or not. */
     private boolean mFlashSupported;
@@ -60,11 +58,11 @@ public class Camera {
         this.mCameraId = mCameraId;
     }
 
-    public int getmState() {
+    public CameraStatus getmState() {
         return mState;
     }
 
-    public void setmState(int mState) {
+    public void setmState(CameraStatus mState) {
         this.mState = mState;
     }
 
@@ -182,9 +180,8 @@ public class Camera {
             new ConfirmationDialog().show(fragment.getFragmentManager(), FRAGMENT_DIALOG);
         } else {
             FragmentCompat.requestPermissions(fragment, new String[]{Manifest.permission.CAMERA},
-                    Camera.REQUEST_CAMERA_PERMISSION);
+                    REQUEST_CAMERA_PERMISSION);
         }
     }
-
 
 }

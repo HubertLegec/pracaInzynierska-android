@@ -47,8 +47,6 @@ public class ResultActivity extends Activity {
     @ViewById
     ImageButton backButton;
     @ViewById
-    ImageButton noGoodResultsButton;
-    @ViewById
     TextView errorTextView;
     @ViewById
     ListView resultList;
@@ -67,14 +65,6 @@ public class ResultActivity extends Activity {
         sendImage();
     }
 
-
-    @ItemClick
-    void resultListItemClicked(ResultEntry entry) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(entry.urlPage));
-        startActivity(i);
-    }
-
     @Click(R.id.rebeginButton)
     void rebeginButtonClick() {
         finish();
@@ -82,12 +72,6 @@ public class ResultActivity extends Activity {
 
     @Click(R.id.backButton)
     void backButtonClick() {
-        ResultActivity.this.finish();
-    }
-
-    @Click(R.id.noGoodResultsButton)
-    void noGoodResultsButtonClick() {
-        //Util.informNoGoodResults(mReqId);
         ResultActivity.this.finish();
     }
 
@@ -115,7 +99,11 @@ public class ResultActivity extends Activity {
         ByteArrayOutputStream imgByteStream = new ByteArrayOutputStream();
         scaledImg.compress(Bitmap.CompressFormat.JPEG, 75, imgByteStream);
 
-        ResponseEntity<SearchResponse> result = pastecRestClient.search(imgByteStream);
+        ResponseEntity<SearchResponse> result = pastecRestClient.search(imgByteStream.toByteArray());
+
+        for(Integer id : result.getBody().imageIds){
+            resultListAdapter.addItem(new ResultEntry(id, "ID:"));
+        }
 
     }
 
@@ -126,7 +114,6 @@ public class ResultActivity extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SearchResultStatus.RESULT_RECEIVED:
-                    resultListAdapter.getImages();
                     resultListAdapter.notifyDataSetChanged();
                     noResultLayout.setVisibility(View.GONE);
                     resultLayout.setVisibility(View.VISIBLE);

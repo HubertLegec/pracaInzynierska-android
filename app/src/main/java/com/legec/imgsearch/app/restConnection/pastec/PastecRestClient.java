@@ -5,7 +5,7 @@ import org.androidannotations.rest.spring.api.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-@Rest(rootUrl = "http://localhost:4212",converters = {MappingJackson2HttpMessageConverter.class})
+@Rest(rootUrl = "http://51.255.204.169:4212",converters = {MappingJackson2HttpMessageConverter.class})
 public interface PastecRestClient {
     @Put("/index/images/{imageID}")
     @Accept(MediaType.APPLICATION_JSON)
@@ -20,7 +20,7 @@ public interface PastecRestClient {
     ResponseEntity<SimpleMessage> ping();
 
     @Post("/index/searcher")
-    @Accept(MediaType.APPLICATION_JSON)
+    @Accept(MediaType.APPLICATION_OCTET_STREAM)
     ResponseEntity<SearchResponse> search(@Body Object image);
 
     @Post("/index/io")

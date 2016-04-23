@@ -1,18 +1,14 @@
 package com.legec.imgsearch.app.camera;
 
-public class CameraStatus {
+public enum CameraStatus {
     /** Camera state: Showing camera preview. */
-    public static final int STATE_PREVIEW = 0;
-
+    STATE_PREVIEW,
     /** Camera state: Waiting for the focus to be locked. */
-    public static final int STATE_WAITING_LOCK = 1;
-
+    STATE_WAITING_LOCK,
     /** Camera state: Waiting for the exposure to be precapture state. */
-    public static final int STATE_WAITING_PRECAPTURE = 2;
-
+    STATE_WAITING_PRECAPTURE,
     /** Camera state: Waiting for the exposure state to be something other than precapture. */
-    public static final int STATE_WAITING_NON_PRECAPTURE = 3;
-
+    STATE_WAITING_NON_PRECAPTURE,
     /** Camera state: Picture was taken. */
-    public static final int STATE_PICTURE_TAKEN = 4;
+    STATE_PICTURE_TAKEN
 }

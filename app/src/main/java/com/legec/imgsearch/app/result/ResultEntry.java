@@ -3,10 +3,13 @@ package com.legec.imgsearch.app.result;
 
 public class ResultEntry {
     public int id;
-    public String name;
-    public String urlImage;
-    public String urlPage;
-    public String description;
+    public String name = "Name:";
 
-    public byte[] imageData;
+    public ResultEntry() {
+    }
+
+    public ResultEntry(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
