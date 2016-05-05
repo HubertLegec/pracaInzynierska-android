@@ -25,7 +25,7 @@ public class ResultItemView extends LinearLayout {
 
     public void bind(ResultEntry entry) {
         name.setText(entry.name);
-        id.setText(entry.id);
+        id.setText(String.valueOf(entry.id));
     }
 
 }

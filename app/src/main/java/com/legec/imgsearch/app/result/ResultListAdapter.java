@@ -1,5 +1,6 @@
 package com.legec.imgsearch.app.result;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -38,6 +39,12 @@ public class ResultListAdapter extends BaseAdapter {
 
     public void addItem(ResultEntry entry){
         results.add(entry);
+    }
+
+    public void addAll(Collection<ResultEntry> entries) { results.addAll(entries); }
+
+    public void clear(){
+        results.clear();
     }
 
     @Override
