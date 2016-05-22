@@ -3,7 +3,6 @@ package com.legec.imgsearch.app.activity;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.widget.ListView;
 
 import com.legec.imgsearch.app.R;
@@ -67,9 +66,8 @@ public class ResultActivity extends Activity {
         ByteArrayOutputStream imgByteStream = new ByteArrayOutputStream();
         scaledImg.compress(Bitmap.CompressFormat.JPEG, 75, imgByteStream);
 
-        restClient.getImage(2);
-
-        ResponseEntity<SearchResponse> result = restClient.search(Base64.encode(imgByteStream.toByteArray(), Base64.DEFAULT));
+        restClient.setHeader("Content-Type", "image/jpeg");
+        ResponseEntity<SearchResponse> result = restClient.search(imgByteStream.toByteArray());
 
         List<ImageDetails> resultImages = result.getBody().getMatchingImages();
 
