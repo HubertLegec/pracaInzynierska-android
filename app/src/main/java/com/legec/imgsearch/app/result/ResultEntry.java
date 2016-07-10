@@ -2,13 +2,13 @@ package com.legec.imgsearch.app.result;
 
 
 public class ResultEntry {
-    public int id;
+    public long id;
     public String name = "Name:";
 
     public ResultEntry() {
     }
 
-    public ResultEntry(int id, String name) {
+    public ResultEntry(long id, String name) {
         this.id = id;
         this.name = name;
     }

@@ -53,12 +53,12 @@ public class ResultActivity extends Activity {
         int newWidth;
         int newHeight;
         if (height > width) {
-            newWidth = 500;
-            newHeight = (int)((float)newWidth / ratio);
+            newHeight = 500;
+            newWidth = (int)((float)newHeight / ratio);
         }
         else {
-            newHeight = 500;
-            newWidth = (int)((float)newHeight * ratio);
+            newWidth = 500;
+            newHeight = (int)((float)newWidth * ratio);
         }
 
         Bitmap scaledImg = Bitmap.createScaledBitmap(img, newWidth, newHeight, false);

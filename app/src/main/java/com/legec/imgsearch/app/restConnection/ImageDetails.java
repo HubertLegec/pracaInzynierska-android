@@ -1,14 +1,14 @@
 package com.legec.imgsearch.app.restConnection;
 
 public class ImageDetails {
-    private Integer id;
+    private Long id;
     private Integer score;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
