@@ -28,4 +28,10 @@ public interface RestClient extends RestClientHeaders {
     @Put("/api/search")
     @RequiresHeader("Content-Type")
     ResponseEntity<SearchResponse> search(@Body byte[] image);
+
+    @Get("/healthCheck")
+    ResponseEntity<String> healthCheck();
+
+    void setRootUrl(String rootUrl);
+    String getRootUrl();
 }
