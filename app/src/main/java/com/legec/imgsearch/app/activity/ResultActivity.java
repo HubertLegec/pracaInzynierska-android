@@ -6,10 +6,7 @@ import android.graphics.BitmapFactory;
 import android.widget.ListView;
 
 import com.legec.imgsearch.app.R;
-import com.legec.imgsearch.app.restConnection.ImageDetails;
 import com.legec.imgsearch.app.restConnection.RestClient;
-import com.legec.imgsearch.app.restConnection.SearchResponse;
-import com.legec.imgsearch.app.result.ResultEntry;
 import com.legec.imgsearch.app.result.ResultListAdapter;
 import com.legec.imgsearch.app.utils.ImageSaver;
 
@@ -20,10 +17,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
-import org.springframework.http.ResponseEntity;
 
 import java.io.ByteArrayOutputStream;
-import java.util.List;
 
 
 @EActivity(R.layout.activity_result)
@@ -67,14 +62,14 @@ public class ResultActivity extends Activity {
         ByteArrayOutputStream imgByteStream = new ByteArrayOutputStream();
         scaledImg.compress(Bitmap.CompressFormat.JPEG, 75, imgByteStream);
 
-        ResponseEntity<SearchResponse> result = restClient.search(imgByteStream.toByteArray());
+        //ResponseEntity<SearchResponse> result = restClient.search(imgByteStream.toByteArray());
 
-        List<ImageDetails> resultImages = result.getBody().getMatchingImages();
+        //List<ImageDetails> resultImages = result.getBody().getMatchingImages();
 
         resultListAdapter.clear();
-        for(ImageDetails imgDet : resultImages){
-            resultListAdapter.addItem(new ResultEntry(imgDet.getId(), "ID:"));
-        }
+        //for(ImageDetails imgDet : resultImages){
+        //    resultListAdapter.addItem(new ResultEntry(imgDet.getId(), "ID:"));
+        //}
         refreshView();
     }
 

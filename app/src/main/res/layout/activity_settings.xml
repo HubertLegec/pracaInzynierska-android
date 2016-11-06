@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp">
@@ -33,6 +34,28 @@
         android:text="Test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/testButton" />
+        android:id="@+id/testButton"
+        android:layout_marginBottom="20px" />
+
+    <TextView
+        android:text="Metadata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="18sp" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loadedCheckbox"
+        android:text="Is metadata loaded"
+        android:clickable="false" />
+
+    <Button
+        android:text="Reload metadata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/reloadButton" />
 
 </LinearLayout>
