@@ -7,6 +7,7 @@ import android.content.SharedPreferences.Editor;
 
 import com.legec.imgsearch.app.R;
 
+
 /**
  * Class responsible for providing and saving user preferences.
  * It uses Android SHaredPreferences to store data

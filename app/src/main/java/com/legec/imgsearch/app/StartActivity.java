@@ -2,11 +2,12 @@ package com.legec.imgsearch.app;
 
 import android.app.Activity;
 
-import com.legec.imgsearch.app.activity.CameraActivity_;
+import com.legec.imgsearch.app.activity.MenuActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
+
 
 @EActivity(R.layout.activity_start)
 public class StartActivity extends Activity {
@@ -23,6 +24,7 @@ public class StartActivity extends Activity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        CameraActivity_.intent(this).start();
+
+        MenuActivity_.intent(this).start();
     }
 }

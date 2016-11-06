@@ -35,11 +35,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.activity.ResultActivity_;
 import com.legec.imgsearch.app.camera.Camera;
 import com.legec.imgsearch.app.camera.CameraStatus;
 import com.legec.imgsearch.app.utils.AutoFitTextureView;
-import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.utils.CompareSizesByArea;
 import com.legec.imgsearch.app.utils.Constants;
 import com.legec.imgsearch.app.utils.ErrorDialog;

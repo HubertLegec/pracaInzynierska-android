@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+
 @EActivity(R.layout.activity_result)
 public class ResultActivity extends Activity {
     @ViewById
@@ -66,7 +67,6 @@ public class ResultActivity extends Activity {
         ByteArrayOutputStream imgByteStream = new ByteArrayOutputStream();
         scaledImg.compress(Bitmap.CompressFormat.JPEG, 75, imgByteStream);
 
-        restClient.setHeader("Content-Type", "image/jpeg");
         ResponseEntity<SearchResponse> result = restClient.search(imgByteStream.toByteArray());
 
         List<ImageDetails> resultImages = result.getBody().getMatchingImages();

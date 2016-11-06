@@ -18,5 +18,21 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/serverAddress" />
+        android:id="@+id/serverAddress"
+        android:layout_marginBottom="30px" />
+
+    <TextView
+        android:text="Connection Test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="18sp" />
+
+    <Button
+        android:text="Test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/testButton" />
+
 </LinearLayout>
