@@ -46,6 +46,7 @@ import com.legec.imgsearch.app.utils.ErrorDialog;
 import com.legec.imgsearch.app.utils.ImageSaver;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -86,6 +87,9 @@ public class CameraFragment extends Fragment
     };
 
     private Camera camera = new Camera();
+
+    @Bean
+    ImageSaver imageSaver;
 
     /**
      * An {@link AutoFitTextureView} for camera preview.
@@ -160,7 +164,8 @@ public class CameraFragment extends Fragment
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-            ImageSaver.setImage(reader.acquireNextImage());
+            imageSaver.checkWritePermission(getActivity());
+            imageSaver.setImage(reader.acquireNextImage());
             ResultActivity_.intent(getActivity()).start();
         }
 

@@ -9,7 +9,9 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.util.Scanner;
 
 @EBean
 public class FileUtils {
@@ -32,5 +34,13 @@ public class FileUtils {
         writer = new OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_PRIVATE));
         writer.write(json);
         writer.close();
+    }
+
+    public <T> T getObjectFromFile(String fileName, Class<T> className) throws IOException {
+        Gson gson = new Gson();
+        InputStream stream = context.openFileInput(fileName);
+        Scanner s = new Scanner(stream).useDelimiter("\\A");
+        String json = s.hasNext() ? s.next() : "";
+        return gson.fromJson(json, className);
     }
 }

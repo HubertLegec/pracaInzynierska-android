@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.legec.imgsearch.app.R;
+import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
@@ -21,6 +22,8 @@ public class GlobalSettings {
     private static final String SERVER_ADDRESS_KEY = "serverAddress";
     private static final String METADATA_LOADED_KEY = "metadataLoaded";
     private static final String EXTRACTOR_TYPE_KEY = "descriptorType";
+    private static final String MATCHER_TYPE_KEY = "matcherType";
+    private static final String MATCHER_NORM_KEY = "matcherNorm";
     private String defaultServer;
     private SharedPreferences preferences;
 
@@ -51,12 +54,7 @@ public class GlobalSettings {
      * @param address Server address. Should not be null or empty.
      */
     public void setServerAddress(String address) {
-        if(address == null || address.isEmpty()) {
-            return;
-        }
-        Editor editor = preferences.edit();
-        editor.putString(SERVER_ADDRESS_KEY, address);
-        editor.apply();
+        setStringProperty(SERVER_ADDRESS_KEY, address);
     }
 
     /**
@@ -86,15 +84,52 @@ public class GlobalSettings {
     }
 
     /**
-     * Stores descriptor type in SharedPreferences. If given value is null or is empty nothing happens.
+     * Stores extractor type in SharedPreferences. If given value is null or is empty nothing happens.
      * @param extractorType Descriptor type as string. Should not be null or empty
      */
     public void setExtractorType(String extractorType) {
-        if (extractorType == null || extractorType.isEmpty()) {
-            return;
+        setStringProperty(EXTRACTOR_TYPE_KEY, extractorType);
+    }
+
+    /**
+     * Returns matcher type as string
+     * @return matcher type, or null if not present
+     */
+    public MatcherDescription getMatcherType() {
+        String name = preferences.getString(MATCHER_TYPE_KEY, null);
+        int normType = preferences.getInt(MATCHER_NORM_KEY, 0);
+        if (name == null) {
+            return null;
+        }
+        MatcherDescription description = new MatcherDescription();
+        description.getMatcher().setMatcher_type(name);
+        description.getMatcher().setNorm_type(normType);
+        return description;
+    }
+
+    /**
+     * Stores matcher type in SharedPreferences. If matcher name is null or is empty nothing happens.
+     * @param matcherType Matcher definition
+     */
+    public void setMatcherType(MatcherDescription matcherType) {
+        if (setStringProperty(MATCHER_TYPE_KEY, matcherType.getMatcher().getMatcher_type())) {
+            setIntProperty(MATCHER_NORM_KEY, matcherType.getMatcher().getNorm_type());
+        }
+    }
+
+    private boolean setStringProperty(String key, String value) {
+        if (value == null || value.isEmpty()) {
+            return false;
         }
         Editor editor = preferences.edit();
-        editor.putString(EXTRACTOR_TYPE_KEY, extractorType);
+        editor.putString(key, value);
+        editor.apply();
+        return true;
+    }
+
+    private void setIntProperty(String key, int value) {
+        Editor editor = preferences.edit();
+        editor.putInt(key, value);
         editor.apply();
     }
 

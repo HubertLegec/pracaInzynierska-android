@@ -12,6 +12,7 @@ import com.legec.imgsearch.app.restConnection.ConnectionService;
 import com.legec.imgsearch.app.restConnection.callbacks.LoadMetadataCallback;
 import com.legec.imgsearch.app.restConnection.callbacks.NoParamsCallback;
 import com.legec.imgsearch.app.restConnection.dto.ExtractorDescription;
+import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 import com.legec.imgsearch.app.settings.GlobalSettings;
 import com.legec.imgsearch.app.utils.FileUtils;
@@ -79,10 +80,11 @@ public class SettingsActivity extends Activity {
             }
 
             @Override
-            public void onSuccess(Vocabulary vocabulary, ExtractorDescription description) {
+            public void onSuccess(Vocabulary vocabulary, ExtractorDescription extractorDescription, MatcherDescription matcherDescription) {
                 try {
                     fileUtils.saveObjectToFile(vocabulary, FileUtils.VOCABULARY_FILE_NAME);
-                    settings.setExtractorType(description.getExtractor());
+                    settings.setExtractorType(extractorDescription.getExtractor());
+                    settings.setMatcherType(matcherDescription);
                     settings.setMetadataLoaded(true);
                     updateMetadataLoaded();
                 } catch (IOException e) {
