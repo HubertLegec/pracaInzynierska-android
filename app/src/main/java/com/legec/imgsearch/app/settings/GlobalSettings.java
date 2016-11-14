@@ -24,6 +24,7 @@ public class GlobalSettings {
     private static final String EXTRACTOR_TYPE_KEY = "descriptorType";
     private static final String MATCHER_TYPE_KEY = "matcherType";
     private static final String MATCHER_NORM_KEY = "matcherNorm";
+    private static final String QUERYING_METHOD_CHANGE = "queryingMethod";
     private String defaultServer;
     private SharedPreferences preferences;
 
@@ -45,7 +46,7 @@ public class GlobalSettings {
      * If not present default value from resources is returned.
      * @return Application server address
      */
-    public String getServerAddres() {
+    public String getServerAddress() {
         return preferences.getString(SERVER_ADDRESS_KEY, defaultServer);
     }
 
@@ -115,6 +116,25 @@ public class GlobalSettings {
         if (setStringProperty(MATCHER_TYPE_KEY, matcherType.getMatcher().getMatcher_type())) {
             setIntProperty(MATCHER_NORM_KEY, matcherType.getMatcher().getNorm_type());
         }
+    }
+
+    /**
+     * Changes querying method. If current value is by image, by histogram is set.
+     * Otherwise conversely.
+     */
+    public void changeQueryingMethod() {
+        boolean currentVal = preferences.getBoolean(QUERYING_METHOD_CHANGE, false);
+        Editor editor = preferences.edit();
+        editor.putBoolean(QUERYING_METHOD_CHANGE, !currentVal);
+        editor.apply();
+    }
+
+    /**
+     * Returns current querying method
+     * @return false if querying by image, true if by histogram
+     */
+    public boolean getQueryingMethod() {
+        return preferences.getBoolean(QUERYING_METHOD_CHANGE, false);
     }
 
     private boolean setStringProperty(String key, String value) {

@@ -6,10 +6,14 @@ import android.util.Log;
 import com.legec.imgsearch.app.restConnection.callbacks.LoadMetadataCallback;
 import com.legec.imgsearch.app.restConnection.callbacks.NoParamsCallback;
 import com.legec.imgsearch.app.restConnection.dto.ExtractorDescription;
+import com.legec.imgsearch.app.restConnection.dto.ImageDetails;
 import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
+import com.legec.imgsearch.app.settings.GlobalSettings;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.androidannotations.rest.spring.api.MediaType;
@@ -20,12 +24,19 @@ import org.springframework.util.MultiValueMap;
 import java.util.Collections;
 import java.util.List;
 
-@EBean
+@EBean(scope = EBean.Scope.Singleton)
 public class ConnectionService {
     private static final String TAG = "CONNECTION_SERVICE";
 
     @RestService
     RestClient restClient;
+    @Bean
+    GlobalSettings settings;
+
+    @AfterInject
+    void afterDependenciesInject() {
+        updateServerAddress(settings.getServerAddress());
+    }
 
     @Background
     public void checkServerStatus(NoParamsCallback callback) {
@@ -54,10 +65,12 @@ public class ConnectionService {
     }
 
     public void updateServerAddress(String newAddress) {
-            restClient.setRootUrl("http://" + newAddress);
+        Log.i(TAG, "update server address: http://" + newAddress);
+        restClient.setRootUrl("http://" + newAddress);
+        Log.i(TAG, "server address updated: " + restClient.getRootUrl());
     }
 
-    public List<String> findByImage(ByteArrayResource image) {
+    public List<ImageDetails> findByImage(ByteArrayResource image) {
         MultiValueMap<String, Object> mvMap = new LinkedMultiValueMap<>();
         mvMap.add("image", image);
         try {
@@ -69,11 +82,11 @@ public class ConnectionService {
         }
     }
 
-    public List<String> findByHistogram(List<Float> histogram) {
+    public List<ImageDetails> findByHistogram(List<Float> histogram) {
         try {
             return restClient.findByHistogram(histogram).getBody().getImages();
         } catch (Exception e) {
-            Log.w(TAG, "findByHistogram", e);
+            Log.e(TAG, "find by histogram", e);
             return Collections.emptyList();
         }
     }

@@ -53,20 +53,22 @@ configurations {
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:appcompat-v7:23.+'
     compile 'org.androidannotations:rest-spring-api:4.0.0'
     apt "org.androidannotations:rest-spring:4.0.0"
     apt "org.androidannotations:androidannotations:4.0.0"
     compile 'org.androidannotations:androidannotations-api:4.0.0'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
-    compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.+'
     compile 'com.android.support:support-v13:23.+'
     compile 'org.bytedeco.javacpp-presets:opencv:3.1.0-1.2'
     compile 'org.bytedeco.javacpp-presets:opencv:3.1.0-1.2'
     compile 'org.bytedeco:javacv:1.2'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.4'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.support:support-v4:23.+'
 }
 
 apt {

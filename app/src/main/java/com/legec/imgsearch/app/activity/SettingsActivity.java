@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.restConnection.ConnectionService;
@@ -19,6 +20,7 @@ import com.legec.imgsearch.app.utils.FileUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
@@ -35,6 +37,8 @@ public class SettingsActivity extends Activity {
     Button testButton;
     @ViewById
     CheckBox loadedCheckbox;
+    @ViewById
+    Switch queryingSwitch;
     @Bean
     ConnectionService connectionService;
     @Bean
@@ -45,8 +49,9 @@ public class SettingsActivity extends Activity {
 
     @AfterViews
     void initViews() {
-        serverAddress.setText(settings.getServerAddres());
+        serverAddress.setText(settings.getServerAddress());
         loadedCheckbox.setChecked(settings.isMetadataLoaded());
+        queryingSwitch.setChecked(settings.getQueryingMethod());
     }
 
     @Click(R.id.testButton)
@@ -98,6 +103,11 @@ public class SettingsActivity extends Activity {
         });
     }
 
+    @CheckedChange(R.id.queryingSwitch)
+    void onQueryingMethodChange() {
+        settings.changeQueryingMethod();
+    }
+
     @Override
     protected void onPause() {
         updateServerAddress();
@@ -106,7 +116,7 @@ public class SettingsActivity extends Activity {
 
     private void updateServerAddress() {
         String newAddress = serverAddress.getText().toString();
-        if (!settings.getServerAddres().equals(newAddress)) {
+        if (!settings.getServerAddress().equals(newAddress)) {
             connectionService.updateServerAddress(newAddress);
             settings.setServerAddress(newAddress);
         }

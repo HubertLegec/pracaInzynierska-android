@@ -20,7 +20,23 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/serverAddress"
-        android:layout_marginBottom="30px" />
+        android:layout_marginBottom="30dp" />
+
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/queryingSwitch"
+        android:textOff="Image"
+        android:textOn="Histogram"
+        android:showText="true"
+        android:switchTextAppearance="@style/TextAppearance.AppCompat"
+        android:checked="false"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:splitTrack="false"
+        style="@*android:style/Widget.Holo.Light.CompoundButton.Switch"
+        android:text="Querying method"
+        android:textSize="18sp"
+        android:layout_marginBottom="30dp" />
 
     <TextView
         android:text="Connection Test"
@@ -35,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/testButton"
-        android:layout_marginBottom="20px" />
+        android:layout_marginBottom="30dp" />
 
     <TextView
         android:text="Metadata"

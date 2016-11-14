@@ -1,8 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:srcCompat="@android:drawable/ic_menu_report_image"
+        android:id="@+id/selectedImage"
+        android:layout_weight="9"
+        android:scaleType="fitCenter" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -10,14 +19,15 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Results:"
         android:id="@+id/textView"
+        android:layout_weight="1"
         android:layout_gravity="center_horizontal" />
 
     <ListView
         android:id="@+id/resultList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@color/displee_green" />
+        android:layout_weight="10"
+        android:divider="@color/displee_green"
+        android:layout_height="0dp" />
 
 
 </LinearLayout>

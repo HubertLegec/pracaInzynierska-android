@@ -22,7 +22,7 @@ import org.springframework.util.MultiValueMap;
 import java.util.List;
 
 
-@Rest(rootUrl = "http://192.168.0.3:5000", converters = {MappingJackson2HttpMessageConverter.class, StringHttpMessageConverter.class, FormHttpMessageConverter.class})
+@Rest(rootUrl = "http://51.255.204.169", converters = {MappingJackson2HttpMessageConverter.class, StringHttpMessageConverter.class, FormHttpMessageConverter.class})
 public interface RestClient extends RestClientHeaders {
 
     @Get("/data/extractor")

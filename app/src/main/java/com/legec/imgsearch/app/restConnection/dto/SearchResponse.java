@@ -4,13 +4,13 @@ package com.legec.imgsearch.app.restConnection.dto;
 import java.util.List;
 
 public class SearchResponse {
-    List<String> images;
+    List<ImageDetails> images;
 
-    public List<String> getImages() {
+    public List<ImageDetails> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(List<ImageDetails> images) {
         this.images = images;
     }
 }

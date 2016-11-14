@@ -1,25 +1,29 @@
 package com.legec.imgsearch.app.result;
+
+import android.app.Activity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+
+import com.bumptech.glide.Glide;
+import com.legec.imgsearch.app.R;
+import com.legec.imgsearch.app.restConnection.dto.ImageDetails;
+
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-
-
 @EBean
 public class ResultListAdapter extends BaseAdapter {
-
-    private final List<ResultEntry> results = new ArrayList<>();
+    private final List<ImageDetails> results = new ArrayList<>();
+    private ResultItemView selectedView = null;
 
     @RootContext
-    Context context;
+    Activity context;
 
 
     @Override
@@ -28,7 +32,7 @@ public class ResultListAdapter extends BaseAdapter {
     }
 
     @Override
-    public ResultEntry getItem(int position) {
+    public ImageDetails getItem(int position) {
         return results.get(position);
     }
 
@@ -37,11 +41,7 @@ public class ResultListAdapter extends BaseAdapter {
         return 0;
     }
 
-    public void addItem(ResultEntry entry){
-        results.add(entry);
-    }
-
-    public void addAll(Collection<ResultEntry> entries) { results.addAll(entries); }
+    public void addAll(Collection<ImageDetails> entries) { results.addAll(entries); }
 
     public void clear(){
         results.clear();
@@ -55,10 +55,29 @@ public class ResultListAdapter extends BaseAdapter {
         } else {
             resultItemView = (ResultItemView) convertView;
         }
-        ResultEntry entry = getItem(position);
+        ImageDetails entry = getItem(position);
         resultItemView.bind(entry);
 
+        Glide.with(context)
+                .load(entry.getUrl())
+                .centerCrop()
+                .placeholder(R.drawable.progress_spinner)
+                .crossFade()
+                .into(resultItemView.imageView);
+
         return resultItemView;
+    }
+
+    public void updateSelectedView(View view) {
+        if(selectedView != null) {
+            selectedView.setSelected(false);
+        }
+        if(view.equals(selectedView)) {
+            selectedView = null;
+        } else {
+            selectedView = (ResultItemView) view;
+            selectedView.setSelected(true);
+        }
     }
 
 }

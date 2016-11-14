@@ -164,7 +164,7 @@ public class CameraFragment extends Fragment
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-            imageSaver.checkWritePermission(getActivity());
+            //imageSaver.checkWritePermission(getActivity());
             imageSaver.setImage(reader.acquireNextImage());
             ResultActivity_.intent(getActivity()).start();
         }
