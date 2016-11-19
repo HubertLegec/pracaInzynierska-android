@@ -1,15 +1,10 @@
 package com.legec.imgsearch.app.camera;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.Fragment;
 import android.graphics.Matrix;
 import android.graphics.RectF;
-import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
-import android.support.v13.app.FragmentCompat;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -17,7 +12,6 @@ import android.view.Surface;
 import android.view.TextureView;
 
 import com.legec.imgsearch.app.utils.CompareSizesByArea;
-import com.legec.imgsearch.app.utils.ConfirmationDialog;
 import com.legec.imgsearch.app.utils.Constants;
 
 import java.util.ArrayList;
@@ -172,16 +166,6 @@ public class Camera {
             matrix.postRotate(180, centerX, centerY);
         }
         mTextureView.setTransform(matrix);
-    }
-
-
-    public static void requestCameraPermission(Fragment fragment) {
-        if (FragmentCompat.shouldShowRequestPermissionRationale(fragment, Manifest.permission.CAMERA)) {
-            new ConfirmationDialog().show(fragment.getFragmentManager(), FRAGMENT_DIALOG);
-        } else {
-            FragmentCompat.requestPermissions(fragment, new String[]{Manifest.permission.CAMERA},
-                    REQUEST_CAMERA_PERMISSION);
-        }
     }
 
 }

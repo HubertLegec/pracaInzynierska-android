@@ -1,6 +1,5 @@
 package com.legec.imgsearch.app.fragment;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -26,7 +25,6 @@ import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.support.v13.app.FragmentCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
@@ -308,7 +306,7 @@ public class CameraFragment extends Fragment
                                            @NonNull int[] grantResults) {
         if (requestCode == Camera.REQUEST_CAMERA_PERMISSION) {
             if (grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                ErrorDialog.newInstance(getString(R.string.request_permission))
+                ErrorDialog.newInstance(getString(R.string.camera_message))
                         .show(getChildFragmentManager(), Camera.FRAGMENT_DIALOG);
             }
         } else {
@@ -436,11 +434,6 @@ public class CameraFragment extends Fragment
      * Opens the camera specified by {@link Camera#getmCameraId()}.
      */
     private void openCamera(int width, int height) {
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            Camera.requestCameraPermission(this);
-            return;
-        }
         setUpCameraOutputs(width, height);
         camera.getTransformMatrix(width, height, getActivity(), mTextureView);
         Activity activity = getActivity();
@@ -450,7 +443,7 @@ public class CameraFragment extends Fragment
                 throw new RuntimeException("Time out waiting to lock camera opening.");
             }
             manager.openCamera(camera.getmCameraId(), mStateCallback, mBackgroundHandler);
-        } catch (CameraAccessException e) {
+        } catch (CameraAccessException | SecurityException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             throw new RuntimeException("Interrupted while trying to lock camera opening.", e);
