@@ -1,16 +1,25 @@
 package com.legec.imgsearch.app.utils;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * There is only one instance of this class in the application, it's a singleton.
@@ -23,14 +32,41 @@ public class ImageSaver {
     private static final String TEMP_FILE_NAME = "queryImage.jpg";
     private static final int IMG_SHORTER_EDGE_SIZE = 500;
 
-    private ByteArrayResource imageResource;
+    @RootContext
+    Context context;
 
-    public void setImage(Image image) {
-        Log.i(TAG, "set image");
-        ByteArrayOutputStream os = resizeAndCompressImage(image);
-        byte[] bytes = os.toByteArray();
-        imageResource = new ImageResource(bytes, TEMP_FILE_NAME);
-        Log.i(TAG, "set image successful");
+    private String currentPhotoPath;
+    private String filename;
+    private Uri galleryFileUri;
+
+    public File createImageFile() throws IOException {
+        galleryFileUri = null;
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        filename = image.getName();
+        return image;
+    }
+
+    public void galleryAddPic() {
+        try {
+            MediaStore.Images.Media.insertImage(context.getContentResolver(), currentPhotoPath, filename, "");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setGalleryImage(Uri uri) {
+        filename = null;
+        this.galleryFileUri = uri;
     }
 
     /**
@@ -38,20 +74,32 @@ public class ImageSaver {
      * @return image as {@link ByteArrayResource} or null if value is not present
      */
     public ByteArrayResource getImage() {
-        return imageResource;
+        Bitmap img = null;
+        if(filename != null) {
+            img = BitmapFactory.decodeFile(currentPhotoPath);
+        } else {
+            try {
+                img = MediaStore.Images.Media.getBitmap(context.getContentResolver(), galleryFileUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        ByteArrayOutputStream os = resizeAndCompressImage(img);
+        byte[] bytes = os.toByteArray();
+        return new ImageResource(bytes, TEMP_FILE_NAME);
     }
 
     /**
      * Resizes and compresses image. Shorter edge is set to {@link #IMG_SHORTER_EDGE_SIZE} and longer is proportional to it.
-     * @param image Input image to process
+     * @param img Input image to process
      * @return Processed image as {@link ByteArrayOutputStream}
      */
-    private ByteArrayOutputStream resizeAndCompressImage(Image image) {
+    private ByteArrayOutputStream resizeAndCompressImage(Bitmap img) {
         Log.i(TAG, "resize and compress image");
-        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+        /*ByteBuffer buffer = image.getPlanes()[0].getBuffer();
         byte[] imageBytes = new byte[buffer.remaining()];
         buffer.get(imageBytes);
-        Bitmap img = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        Bitmap img = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);*/
         int height = img.getHeight();
         int width = img.getWidth();
         float ratio = (float) height / (float) width;

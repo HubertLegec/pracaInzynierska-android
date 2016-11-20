@@ -1,15 +1,14 @@
 package com.legec.imgsearch.app.activity;
 
 import android.app.Activity;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.legec.imgsearch.app.R;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
@@ -25,22 +24,20 @@ public class ImagePreviewActivity extends Activity {
 
     @AfterViews
     public void initViews() {
-        loadImage();
+        Glide.with(this)
+                .load(imageUri)
+                .fitCenter()
+                .into(imgView);
     }
 
-    void loadImage() {
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-        // Get the cursor
-        Cursor cursor = getContentResolver().query(imageUri, filePathColumn, null, null, null);
-        // Move to first row
-        cursor.moveToFirst();
-
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String imgDecodableString = cursor.getString(columnIndex);
-        cursor.close();
-        // Set the Image in ImageView after decoding the String
-        imgView.setImageBitmap(BitmapFactory
-                .decodeFile(imgDecodableString));
+    @Click(R.id.back)
+    void backClicked() {
+        super.onBackPressed();
     }
+
+    @Click(R.id.submit)
+    void submitClick() {
+        ResultActivity_.intent(this).start();
+    }
+
 }
