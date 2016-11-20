@@ -8,11 +8,15 @@ import com.legec.imgsearch.app.utils.FileUtils;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
-import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacpp.opencv_imgcodecs;
+import org.springframework.core.io.ByteArrayResource;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+
+import static org.bytedeco.javacpp.opencv_imgcodecs.imdecode;
 
 @EBean
 public class OpenCvService {
@@ -22,20 +26,29 @@ public class OpenCvService {
     @Bean
     FileUtils fileUtils;
 
-    public List<Float> generateHistogram(byte[] image) {
+    public List<Float> generateHistogram(ByteArrayResource image) {
         //TODO
         try {
+            byte[] imgBytes = image.getByteArray();
+            Mat imgMat = new Mat(imgBytes);
+            Mat grayscaleImage = imdecode(imgMat, opencv_imgcodecs.IMREAD_GRAYSCALE);
             Vocabulary v = fileUtils.getObjectFromFile(FileUtils.VOCABULARY_FILE_NAME, Vocabulary.class);
             String extractor = globalSettings.getExtractorType();
             MatcherDescription matcher = globalSettings.getMatcherType();
             HistogramGenerator generator = new HistogramGenerator(v, extractor, matcher);
-            opencv_core.Mat cvImage = null;
-            generator.getHistogramForImage(cvImage);
-            return null;
+            Mat histogram = generator.getHistogramForImage(grayscaleImage);
+            return matHistogramToListHistogram(histogram);
         } catch (IOException e) {
             e.printStackTrace();
             return Collections.emptyList();
         }
+    }
+
+    private List<Float> matHistogramToListHistogram(Mat mat) {
+        int h = mat.size().height();
+        int w = mat.size().width();
+
+        return Collections.emptyList();
     }
 
 }

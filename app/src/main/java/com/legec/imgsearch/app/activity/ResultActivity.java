@@ -65,8 +65,5 @@ public class ResultActivity extends Activity {
     @UiThread
     void refreshView(){
         resultListAdapter.notifyDataSetChanged();
-        resultList.performItemClick(
-                resultList.getAdapter().getView(0, null, null), 0, resultList.getItemIdAtPosition(0)
-        );
     }
 }

@@ -7,8 +7,16 @@ import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 import org.bytedeco.javacpp.opencv_features2d.BFMatcher;
 import org.bytedeco.javacpp.opencv_features2d.DescriptorMatcher;
 
-
+/**
+ * Class responsible for creating matcher objects.
+ */
 public class MatcherProvider {
+    /**
+     * Creates and returns matcher. It's type is determined based on the given description
+     * @param description {@link MatcherDescription} determines matcher type
+     * @return created matcher
+     * @throws RuntimeException when description doesn't match any known matcher
+     */
     public static DescriptorMatcher getMatcherByDescription(MatcherDescription description) throws RuntimeException {
         String name = description.getMatcher().getMatcher_type();
         switch (name) {

@@ -3,11 +3,11 @@ package com.legec.imgsearch.app.opencv;
 import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 
-import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_core.KeyPointVector;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_features2d.BOWImgDescriptorExtractor;
 import org.bytedeco.javacpp.opencv_features2d.DescriptorMatcher;
-import org.bytedeco.javacpp.opencv_features2d.Feature2D;
+import org.bytedeco.javacpp.opencv_xfeatures2d;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class HistogramGenerator {
     private final DescriptorMatcher matcher;
-    private final Feature2D extractor;
+    private final opencv_xfeatures2d.SIFT extractor;
     private final BOWImgDescriptorExtractor descriptorExtractor;
     private final int vocabularySize;
 
@@ -30,10 +30,24 @@ public class HistogramGenerator {
      */
     public HistogramGenerator(Vocabulary vocabulary, String extractorType, MatcherDescription matcherDescription) {
         matcher = MatcherProvider.getMatcherByDescription(matcherDescription);
-        extractor = ExtractorProvider.getExtractorByName(extractorType);
+        extractor = opencv_xfeatures2d.SIFT.create(); //(opencv_xfeatures2d.SIFT) ExtractorProvider.getExtractorByName(extractorType);
         descriptorExtractor = new BOWImgDescriptorExtractor(extractor, matcher);
-        descriptorExtractor.setVocabulary(transformVocabularyToMat(vocabulary));
+        Mat vocabularyMat = transformVocabularyToMat(vocabulary);
+        descriptorExtractor.setVocabulary(vocabularyMat);
         vocabularySize = vocabulary.getVocabulary().size();
+    }
+
+    /**
+     * Creates histogram for given image.
+     * @param image Image as {@link Mat} object. It should be grayscale image
+     * @return image histogram
+     */
+    public Mat getHistogramForImage(Mat image) {
+        KeyPointVector keyPointVector = new KeyPointVector();
+        extractor.detect(image, keyPointVector, null);
+        Mat result = new Mat();
+        descriptorExtractor.compute(image, keyPointVector, result);
+        return result;
     }
 
     private Mat transformVocabularyToMat(Vocabulary vocabulary) {
@@ -53,13 +67,5 @@ public class HistogramGenerator {
             array[i] = list.get(i);
         }
         return array;
-    }
-
-    public Mat getHistogramForImage(Mat image) {
-        opencv_core.KeyPointVector keyPointVector = new opencv_core.KeyPointVector();
-        extractor.detect(image, keyPointVector);
-        Mat result = new Mat();
-        descriptorExtractor.compute(image, result);
-        return result;
     }
 }

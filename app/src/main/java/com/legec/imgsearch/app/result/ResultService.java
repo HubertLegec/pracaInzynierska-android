@@ -1,6 +1,7 @@
 package com.legec.imgsearch.app.result;
 
 
+import com.legec.imgsearch.app.opencv.OpenCvService;
 import com.legec.imgsearch.app.restConnection.ConnectionService;
 import com.legec.imgsearch.app.restConnection.dto.ImageDetails;
 import com.legec.imgsearch.app.settings.GlobalSettings;
@@ -10,7 +11,6 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.springframework.core.io.ByteArrayResource;
 
-import java.util.Collections;
 import java.util.List;
 
 @EBean
@@ -21,6 +21,8 @@ public class ResultService {
     ConnectionService connectionService;
     @Bean
     ImageSaver imageSaver;
+    @Bean
+    OpenCvService openCvService;
 
     public List<ImageDetails> sendSearchRequest() {
         ByteArrayResource image = imageSaver.getImage();
@@ -32,7 +34,7 @@ public class ResultService {
     }
 
     private List<ImageDetails> searchByHistogram(ByteArrayResource imageResource) {
-        //TODO
-        return Collections.emptyList();
+        List<Float> histogram = openCvService.generateHistogram(imageResource);
+        return connectionService.findByHistogram(histogram);
     }
 }
