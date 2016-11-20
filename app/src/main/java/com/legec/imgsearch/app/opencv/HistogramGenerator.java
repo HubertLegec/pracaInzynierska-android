@@ -9,7 +9,10 @@ import org.bytedeco.javacpp.opencv_features2d.BOWImgDescriptorExtractor;
 import org.bytedeco.javacpp.opencv_features2d.DescriptorMatcher;
 import org.bytedeco.javacpp.opencv_xfeatures2d;
 
+import java.nio.ByteBuffer;
 import java.util.List;
+
+import static org.bytedeco.javacpp.opencv_core.CV_32F;
 
 /**
  * Class responsible for generating images histograms
@@ -20,7 +23,6 @@ public class HistogramGenerator {
     private final DescriptorMatcher matcher;
     private final opencv_xfeatures2d.SIFT extractor;
     private final BOWImgDescriptorExtractor descriptorExtractor;
-    private final int vocabularySize;
 
     /**
      * Creates generator instance
@@ -34,7 +36,6 @@ public class HistogramGenerator {
         descriptorExtractor = new BOWImgDescriptorExtractor(extractor, matcher);
         Mat vocabularyMat = transformVocabularyToMat(vocabulary);
         descriptorExtractor.setVocabulary(vocabularyMat);
-        vocabularySize = vocabulary.getVocabulary().size();
     }
 
     /**
@@ -52,20 +53,19 @@ public class HistogramGenerator {
 
     private Mat transformVocabularyToMat(Vocabulary vocabulary) {
         List<List<Float>> vocabularyValues = vocabulary.getVocabulary();
-        Mat result = new Mat();
-        for(List<Float> row : vocabularyValues) {
-            float[] array = floatListToArray(row);
-            Mat rowMat = new Mat(array);
-            result.push_back(rowMat);
-        }
+        Mat result = new Mat(vocabulary.getSize(), vocabulary.getRowSize(), CV_32F);
+        byte[] content = floatList2ByteArray(vocabularyValues, vocabulary.getSize() * vocabulary.getRowSize());
+        result.data().put(content);
         return result;
     }
 
-    private float[] floatListToArray(List<Float> list) {
-        float[] array = new float[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            array[i] = list.get(i);
+    public static byte[] floatList2ByteArray(List<List<Float>> values, int size){
+        ByteBuffer buffer = ByteBuffer.allocate(4 * size);
+        for (List<Float> row : values){
+            for(Float v : row){
+                buffer.putFloat(v);
+            }
         }
-        return array;
+        return buffer.array();
     }
 }

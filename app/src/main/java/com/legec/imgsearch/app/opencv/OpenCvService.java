@@ -27,7 +27,6 @@ public class OpenCvService {
     FileUtils fileUtils;
 
     public List<Float> generateHistogram(ByteArrayResource image) {
-        //TODO
         try {
             byte[] imgBytes = image.getByteArray();
             Mat imgMat = new Mat(imgBytes);
@@ -45,6 +44,7 @@ public class OpenCvService {
     }
 
     private List<Float> matHistogramToListHistogram(Mat mat) {
+        //TODO
         int h = mat.size().height();
         int w = mat.size().width();
 
