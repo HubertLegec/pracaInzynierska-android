@@ -30,7 +30,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/name"
                     android:textSize="20sp"
-                    android:layout_marginRight="30px"/>
+                    android:layout_marginRight="30px"
+                    android:textColor="@color/primary" />
 
                 <TextView
                     android:id="@+id/matchRatio"
@@ -39,7 +40,8 @@
                     android:layout_marginEnd="3dp"
                     android:layout_marginRight="3dp"
                     android:textSize="20sp"
-                    android:text="@string/description" />
+                    android:text="@string/description"
+                    android:textColor="@color/primary" />
 
         </LinearLayout>
 

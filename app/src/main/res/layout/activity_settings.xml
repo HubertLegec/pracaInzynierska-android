@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:background="@color/primary_light">
 
     <TextView
         android:text="Server address:"
@@ -12,7 +13,8 @@
         android:id="@+id/textView2"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="18sp"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/primary" />
 
     <EditText
         android:layout_width="match_parent"
@@ -20,7 +22,9 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/serverAddress"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginBottom="30dp"
+        android:textColor="@color/primary"
+        android:textColorLink="@color/accent" />
 
     <Switch
         android:layout_width="match_parent"
@@ -28,6 +32,8 @@
         android:id="@+id/queryingSwitch"
         android:textOff="Image"
         android:textOn="Histogram"
+        android:thumbTint="@color/primary"
+        android:trackTint="@color/accent"
         android:showText="true"
         android:switchTextAppearance="@style/TextAppearance.AppCompat"
         android:checked="false"
@@ -36,7 +42,8 @@
         style="@*android:style/Widget.Holo.Light.CompoundButton.Switch"
         android:text="Querying method"
         android:textSize="18sp"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginBottom="30dp"
+        android:textColor="@color/primary" />
 
     <TextView
         android:text="Connection Test"
@@ -44,14 +51,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView3"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textColor="@color/primary" />
 
     <Button
         android:text="Test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/testButton"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginBottom="30dp"
+        android:background="@color/primary_dark"
+        android:textColor="@color/primary_light" />
 
     <TextView
         android:text="Metadata"
@@ -59,19 +69,23 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView4"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textColor="@color/primary" />
 
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/loadedCheckbox"
         android:text="Is metadata loaded"
-        android:clickable="false" />
+        android:clickable="false"
+        android:textColor="@color/primary" />
 
     <Button
         android:text="Reload metadata"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/reloadButton" />
+        android:id="@+id/reloadButton"
+        android:background="@color/primary_dark"
+        android:textColor="@color/primary_light" />
 
 </LinearLayout>
