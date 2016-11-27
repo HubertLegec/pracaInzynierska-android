@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.legec.imgsearch.app.R;
@@ -56,14 +57,23 @@ public class ResultActivity extends Activity {
 
     @Background(id = "sendTask")
     void sendImage() {
-        List<ImageDetails> result = resultService.sendSearchRequest();
-        resultListAdapter.clear();
-        resultListAdapter.addAll(result);
-        refreshView();
+        try {
+            List<ImageDetails> result = resultService.sendSearchRequest();
+            resultListAdapter.clear();
+            resultListAdapter.addAll(result);
+            refreshView();
+        } catch (Exception e) {
+            showError(e.getMessage());
+        }
     }
 
     @UiThread
     void refreshView(){
         resultListAdapter.notifyDataSetChanged();
+    }
+
+    @UiThread
+    void showError(String message) {
+        Toast.makeText(this, "Connection error: " + message, Toast.LENGTH_LONG).show();
     }
 }

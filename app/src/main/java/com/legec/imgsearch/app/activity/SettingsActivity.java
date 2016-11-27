@@ -105,7 +105,7 @@ public class SettingsActivity extends Activity {
 
     @CheckedChange(R.id.queryingSwitch)
     void onQueryingMethodChange() {
-        settings.changeQueryingMethod();
+        settings.setQueryingMethod(queryingSwitch.isChecked());
     }
 
     @Override

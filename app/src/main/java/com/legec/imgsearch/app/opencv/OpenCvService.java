@@ -13,9 +13,12 @@ import org.bytedeco.javacpp.opencv_imgcodecs;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.IOException;
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.bytedeco.javacpp.opencv_core.CV_32F;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imdecode;
 
 @EBean
@@ -44,11 +47,16 @@ public class OpenCvService {
     }
 
     private List<Float> matHistogramToListHistogram(Mat mat) {
-        //TODO
-        int h = mat.size().height();
-        int w = mat.size().width();
-
-        return Collections.emptyList();
+        Mat floatMat = new Mat();
+        mat.convertTo(floatMat, CV_32F);
+        FloatBuffer floatBuffer = floatMat.createBuffer();
+        float[] floatArray = new float[floatBuffer.capacity()];
+        floatBuffer.get(floatArray);
+        List<Float> result = new ArrayList<>(floatArray.length);
+        for (float v : floatArray) {
+            result.add(v);
+        }
+        return result;
     }
 
 }

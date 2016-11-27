@@ -21,7 +21,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Collections;
 import java.util.List;
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -78,7 +77,7 @@ public class ConnectionService {
             return restClient.find(mvMap).getBody().getImages();
         } catch (Exception e) {
             Log.w(TAG, "findByImage: ", e);
-            return Collections.emptyList();
+            throw e;
         }
     }
 
@@ -87,7 +86,7 @@ public class ConnectionService {
             return restClient.findByHistogram(histogram).getBody().getImages();
         } catch (Exception e) {
             Log.e(TAG, "find by histogram", e);
-            return Collections.emptyList();
+            throw e;
         }
     }
 }

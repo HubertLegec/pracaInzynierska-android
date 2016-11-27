@@ -45,7 +45,7 @@ public class HistogramGenerator {
      */
     public Mat getHistogramForImage(Mat image) {
         KeyPointVector keyPointVector = new KeyPointVector();
-        extractor.detect(image, keyPointVector, null);
+        extractor.detect(image, keyPointVector);
         Mat result = new Mat();
         descriptorExtractor.compute(image, keyPointVector, result);
         return result;

@@ -122,10 +122,9 @@ public class GlobalSettings {
      * Changes querying method. If current value is by image, by histogram is set.
      * Otherwise conversely.
      */
-    public void changeQueryingMethod() {
-        boolean currentVal = preferences.getBoolean(QUERYING_METHOD_CHANGE, false);
+    public void setQueryingMethod(boolean method) {
         Editor editor = preferences.edit();
-        editor.putBoolean(QUERYING_METHOD_CHANGE, !currentVal);
+        editor.putBoolean(QUERYING_METHOD_CHANGE, method);
         editor.apply();
     }
 
