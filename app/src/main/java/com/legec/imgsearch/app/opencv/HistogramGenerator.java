@@ -3,13 +3,14 @@ package com.legec.imgsearch.app.opencv;
 import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 
+import org.bytedeco.javacpp.FloatPointer;
 import org.bytedeco.javacpp.opencv_core.KeyPointVector;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_features2d.BOWImgDescriptorExtractor;
 import org.bytedeco.javacpp.opencv_features2d.DescriptorMatcher;
 import org.bytedeco.javacpp.opencv_xfeatures2d;
 
-import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import java.util.List;
 
 import static org.bytedeco.javacpp.opencv_core.CV_32F;
@@ -43,29 +44,31 @@ public class HistogramGenerator {
      * @param image Image as {@link Mat} object. It should be grayscale image
      * @return image histogram
      */
-    public Mat getHistogramForImage(Mat image) {
+    public float[] getHistogramForImage(Mat image) {
         KeyPointVector keyPointVector = new KeyPointVector();
         extractor.detect(image, keyPointVector);
         Mat result = new Mat();
         descriptorExtractor.compute(image, keyPointVector, result);
-        return result;
+        FloatBuffer floatBuffer = result.createBuffer();
+        float[] histogram = new float[floatBuffer.capacity()];
+        floatBuffer.get(histogram);
+        return histogram;
     }
 
     private Mat transformVocabularyToMat(Vocabulary vocabulary) {
         List<List<Float>> vocabularyValues = vocabulary.getVocabulary();
-        Mat result = new Mat(vocabulary.getSize(), vocabulary.getRowSize(), CV_32F);
-        byte[] content = floatList2ByteArray(vocabularyValues, vocabulary.getSize() * vocabulary.getRowSize());
-        result.data().put(content);
+        FloatBuffer content = floatList2FloatBuffer(vocabularyValues, vocabulary.getSize() * vocabulary.getRowSize());
+        Mat result = new Mat(vocabulary.getSize(), vocabulary.getRowSize(), CV_32F, new FloatPointer(content));
         return result;
     }
 
-    public static byte[] floatList2ByteArray(List<List<Float>> values, int size){
-        ByteBuffer buffer = ByteBuffer.allocate(4 * size);
+    private static FloatBuffer floatList2FloatBuffer(List<List<Float>> values, int size){
+        FloatBuffer buffer = FloatBuffer.allocate(size);
         for (List<Float> row : values){
             for(Float v : row){
-                buffer.putFloat(v);
+                buffer.put(v);
             }
         }
-        return buffer.array();
+        return buffer;
     }
 }

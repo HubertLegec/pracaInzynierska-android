@@ -77,11 +77,7 @@ public class SettingsActivity extends Activity {
         connectionService.loadMetadataFromServer(new LoadMetadataCallback() {
             @Override
             public void onError() {
-                settings.setMetadataLoaded(false);
-                new AlertDialog.Builder(activity)
-                        .setMessage(R.string.load_metadata_error)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show();
+                onLoadMetadataError(activity);
             }
 
             @Override
@@ -93,14 +89,28 @@ public class SettingsActivity extends Activity {
                     settings.setMetadataLoaded(true);
                     updateMetadataLoaded();
                 } catch (IOException e) {
-                    settings.setMetadataLoaded(false);
-                    new AlertDialog.Builder(activity)
-                            .setMessage("Error during saving on device")
-                            .setPositiveButton(android.R.string.ok, null)
-                            .show();
+                    onSaveLoadedMetadataError(activity);
                 }
             }
         });
+    }
+
+    @UiThread
+    void onSaveLoadedMetadataError(Activity activity) {
+        settings.setMetadataLoaded(false);
+        new AlertDialog.Builder(activity)
+                .setMessage("Error during saving on device")
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
+    }
+
+    @UiThread
+    void onLoadMetadataError(Activity activity) {
+        settings.setMetadataLoaded(false);
+        new AlertDialog.Builder(activity)
+                .setMessage(R.string.load_metadata_error)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     @CheckedChange(R.id.queryingSwitch)

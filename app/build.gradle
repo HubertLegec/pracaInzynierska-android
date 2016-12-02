@@ -65,6 +65,7 @@ dependencies {
     compile group: 'org.bytedeco', name: 'javacpp', version: '1.2.4'
     compile group: 'org.bytedeco', name: 'javacv', version: '1.2'
     compile group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '3.1.0-1.2', classifier: 'android-arm'
+    compile group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '3.1.0-1.2', classifier: 'android-x86' //it is necessary to run app on emulator
     compile group: 'com.google.code.gson', name: 'gson', version: '2.4'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'

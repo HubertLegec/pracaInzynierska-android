@@ -13,12 +13,10 @@ import org.bytedeco.javacpp.opencv_imgcodecs;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.IOException;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.bytedeco.javacpp.opencv_core.CV_32F;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imdecode;
 
 @EBean
@@ -38,22 +36,17 @@ public class OpenCvService {
             String extractor = globalSettings.getExtractorType();
             MatcherDescription matcher = globalSettings.getMatcherType();
             HistogramGenerator generator = new HistogramGenerator(v, extractor, matcher);
-            Mat histogram = generator.getHistogramForImage(grayscaleImage);
-            return matHistogramToListHistogram(histogram);
+            float[] histogram = generator.getHistogramForImage(grayscaleImage);
+            return histogramToList(histogram, v.getSize());
         } catch (IOException e) {
             e.printStackTrace();
             return Collections.emptyList();
         }
     }
 
-    private List<Float> matHistogramToListHistogram(Mat mat) {
-        Mat floatMat = new Mat();
-        mat.convertTo(floatMat, CV_32F);
-        FloatBuffer floatBuffer = floatMat.createBuffer();
-        float[] floatArray = new float[floatBuffer.capacity()];
-        floatBuffer.get(floatArray);
-        List<Float> result = new ArrayList<>(floatArray.length);
-        for (float v : floatArray) {
+    private List<Float> histogramToList(float[] histogram, int size) {
+        List<Float> result = new ArrayList<>(size);
+        for(float v : histogram) {
             result.add(v);
         }
         return result;
