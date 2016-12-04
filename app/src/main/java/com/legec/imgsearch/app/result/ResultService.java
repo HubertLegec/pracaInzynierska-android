@@ -1,6 +1,8 @@
 package com.legec.imgsearch.app.result;
 
 
+import android.util.Log;
+
 import com.legec.imgsearch.app.opencv.OpenCvService;
 import com.legec.imgsearch.app.restConnection.ConnectionService;
 import com.legec.imgsearch.app.restConnection.dto.ImageDetails;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @EBean
 public class ResultService {
+    private static final String TAG = "ImgSearch-ResultService";
     @Bean
     GlobalSettings settings;
     @Bean
@@ -34,6 +37,7 @@ public class ResultService {
     }
 
     private List<ImageDetails> searchByHistogram(ByteArrayResource imageResource) {
+        Log.i(TAG, "search by histogram");
         List<Float> histogram = openCvService.generateHistogram(imageResource);
         return connectionService.findByHistogram(histogram);
     }

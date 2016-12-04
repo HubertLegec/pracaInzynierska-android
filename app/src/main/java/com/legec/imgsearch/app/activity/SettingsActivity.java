@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import com.legec.imgsearch.app.R;
+import com.legec.imgsearch.app.opencv.OpenCvService;
 import com.legec.imgsearch.app.restConnection.ConnectionService;
 import com.legec.imgsearch.app.restConnection.callbacks.LoadMetadataCallback;
 import com.legec.imgsearch.app.restConnection.callbacks.NoParamsCallback;
@@ -45,6 +46,8 @@ public class SettingsActivity extends Activity {
     FileUtils fileUtils;
     @Bean
     GlobalSettings settings;
+    @Bean
+    OpenCvService openCvService;
 
 
     @AfterViews
@@ -74,6 +77,7 @@ public class SettingsActivity extends Activity {
     void onReloadMetadataClick() {
         updateServerAddress();
         final Activity activity = this;
+        loadedCheckbox.setChecked(false);
         connectionService.loadMetadataFromServer(new LoadMetadataCallback() {
             @Override
             public void onError() {
@@ -87,6 +91,7 @@ public class SettingsActivity extends Activity {
                     settings.setExtractorType(extractorDescription.getExtractor());
                     settings.setMatcherType(matcherDescription);
                     settings.setMetadataLoaded(true);
+                    openCvService.updateConfiguration();
                     updateMetadataLoaded();
                 } catch (IOException e) {
                     onSaveLoadedMetadataError(activity);

@@ -21,18 +21,17 @@ import static org.bytedeco.javacpp.opencv_core.CV_32F;
  * If the configurations differs, it causes errors in matching images
  */
 public class HistogramGenerator {
-    private final DescriptorMatcher matcher;
-    private final opencv_xfeatures2d.SIFT extractor;
-    private final BOWImgDescriptorExtractor descriptorExtractor;
+    private static opencv_xfeatures2d.SIFT extractor;
+    private static BOWImgDescriptorExtractor descriptorExtractor;
 
     /**
-     * Creates generator instance
+     * Updates generator instance
      * @param vocabulary vocabulary fetched from server
      * @param extractorType extractor type fetched from server
      * @param matcherDescription matcher description fetched from server
      */
-    public HistogramGenerator(Vocabulary vocabulary, String extractorType, MatcherDescription matcherDescription) {
-        matcher = MatcherProvider.getMatcherByDescription(matcherDescription);
+    public static void update(Vocabulary vocabulary, String extractorType, MatcherDescription matcherDescription) {
+        DescriptorMatcher matcher = MatcherProvider.getMatcherByDescription(matcherDescription);
         extractor = opencv_xfeatures2d.SIFT.create(); //(opencv_xfeatures2d.SIFT) ExtractorProvider.getExtractorByName(extractorType);
         descriptorExtractor = new BOWImgDescriptorExtractor(extractor, matcher);
         Mat vocabularyMat = transformVocabularyToMat(vocabulary);
@@ -44,7 +43,7 @@ public class HistogramGenerator {
      * @param image Image as {@link Mat} object. It should be grayscale image
      * @return image histogram
      */
-    public float[] getHistogramForImage(Mat image) {
+    public static float[] getHistogramForImage(Mat image) {
         KeyPointVector keyPointVector = new KeyPointVector();
         extractor.detect(image, keyPointVector);
         Mat result = new Mat();
@@ -55,20 +54,29 @@ public class HistogramGenerator {
         return histogram;
     }
 
-    private Mat transformVocabularyToMat(Vocabulary vocabulary) {
-        List<List<Float>> vocabularyValues = vocabulary.getVocabulary();
-        FloatBuffer content = floatList2FloatBuffer(vocabularyValues, vocabulary.getSize() * vocabulary.getRowSize());
-        Mat result = new Mat(vocabulary.getSize(), vocabulary.getRowSize(), CV_32F, new FloatPointer(content));
+    public static boolean isValid() {
+        return extractor != null && descriptorExtractor != null;
+    }
+
+    private static Mat transformVocabularyToMat(Vocabulary vocabulary) {
+        List<List<Float>> values = vocabulary.getVocabulary();
+        Mat result = null;
+        for (List<Float> row : values){
+            if (result == null) {
+                result = listOfFloatToMat(row);
+            } else {
+                Mat rowMat = listOfFloatToMat(row);
+                result.push_back(rowMat);
+            }
+        }
         return result;
     }
 
-    private static FloatBuffer floatList2FloatBuffer(List<List<Float>> values, int size){
-        FloatBuffer buffer = FloatBuffer.allocate(size);
-        for (List<Float> row : values){
-            for(Float v : row){
-                buffer.put(v);
-            }
+    private static Mat listOfFloatToMat(List<Float> row) {
+        FloatBuffer buffer = FloatBuffer.allocate(row.size());
+        for(Float v : row) {
+            buffer.put(v);
         }
-        return buffer;
+        return new Mat(1, row.size(), CV_32F, new FloatPointer(buffer));
     }
 }

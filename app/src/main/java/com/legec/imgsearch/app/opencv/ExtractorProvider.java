@@ -23,7 +23,7 @@ public class ExtractorProvider {
         String nameCore = name.substring(name.lastIndexOf('_') + 1);
         switch (nameCore) {
             case "SIFT":
-                return new SIFT();
+                return SIFT.create();
             default:
                 throw new NotImplementedYetException("Extractor" + nameCore + " not implemented yet");
         }

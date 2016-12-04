@@ -96,10 +96,6 @@ public class ImageSaver {
      */
     private ByteArrayOutputStream resizeAndCompressImage(Bitmap img) {
         Log.i(TAG, "resize and compress image");
-        /*ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-        byte[] imageBytes = new byte[buffer.remaining()];
-        buffer.get(imageBytes);
-        Bitmap img = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);*/
         int height = img.getHeight();
         int width = img.getWidth();
         float ratio = (float) height / (float) width;
