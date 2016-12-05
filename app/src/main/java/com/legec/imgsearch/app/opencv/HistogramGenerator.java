@@ -3,6 +3,7 @@ package com.legec.imgsearch.app.opencv;
 import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.bytedeco.javacpp.FloatPointer;
 import org.bytedeco.javacpp.opencv_core.KeyPointVector;
 import org.bytedeco.javacpp.opencv_core.Mat;
@@ -23,6 +24,7 @@ import static org.bytedeco.javacpp.opencv_core.CV_32F;
 public class HistogramGenerator {
     private static opencv_xfeatures2d.SIFT extractor;
     private static BOWImgDescriptorExtractor descriptorExtractor;
+    private static int vocabularySize;
 
     /**
      * Updates generator instance
@@ -35,6 +37,7 @@ public class HistogramGenerator {
         extractor = opencv_xfeatures2d.SIFT.create(); //(opencv_xfeatures2d.SIFT) ExtractorProvider.getExtractorByName(extractorType);
         descriptorExtractor = new BOWImgDescriptorExtractor(extractor, matcher);
         Mat vocabularyMat = transformVocabularyToMat(vocabulary);
+        vocabularySize = vocabulary.getSize();
         descriptorExtractor.setVocabulary(vocabularyMat);
     }
 
@@ -45,8 +48,9 @@ public class HistogramGenerator {
      */
     public static float[] getHistogramForImage(Mat image) {
         KeyPointVector keyPointVector = new KeyPointVector();
+        extractor.clear();
         extractor.detect(image, keyPointVector);
-        Mat result = new Mat();
+        Mat result = new Mat(1, vocabularySize, CV_32F);
         descriptorExtractor.compute(image, keyPointVector, result);
         FloatBuffer floatBuffer = result.createBuffer();
         float[] histogram = new float[floatBuffer.capacity()];
@@ -73,10 +77,7 @@ public class HistogramGenerator {
     }
 
     private static Mat listOfFloatToMat(List<Float> row) {
-        FloatBuffer buffer = FloatBuffer.allocate(row.size());
-        for(Float v : row) {
-            buffer.put(v);
-        }
-        return new Mat(1, row.size(), CV_32F, new FloatPointer(buffer));
+        float[] array = ArrayUtils.toPrimitive(row.toArray(new Float[0]));
+        return new Mat(1, row.size(), CV_32F, new FloatPointer(array));
     }
 }
