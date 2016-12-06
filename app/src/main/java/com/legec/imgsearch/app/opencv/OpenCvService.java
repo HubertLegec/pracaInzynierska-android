@@ -10,12 +10,13 @@ import com.legec.imgsearch.app.utils.FileUtils;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.apache.commons.lang3.ArrayUtils;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_imgcodecs;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.bytedeco.javacpp.opencv_imgcodecs.imdecode;
@@ -43,6 +44,9 @@ public class OpenCvService {
             }
         }
         byte[] imgBytes = image.getByteArray();
+        if(imgBytes == null || imgBytes.length == 0) {
+            throw new RuntimeException("Image is not loaded properly");
+        }
         Mat imgMat = new Mat(imgBytes);
         Mat grayscaleImage = imdecode(imgMat, opencv_imgcodecs.IMREAD_GRAYSCALE);
         float[] histogram = HistogramGenerator.getHistogramForImage(grayscaleImage);
@@ -59,11 +63,7 @@ public class OpenCvService {
 
     private List<Float> histogramToList(float[] histogram) {
         Log.i(TAG, "histogram to list");
-        List<Float> result = new ArrayList<>(histogram.length);
-        for (float v : histogram) {
-            result.add(v);
-        }
-        return result;
+        return Arrays.asList(ArrayUtils.toObject(histogram));
     }
 
 }
