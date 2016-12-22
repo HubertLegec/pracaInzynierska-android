@@ -21,7 +21,7 @@ import static org.bytedeco.javacpp.opencv_core.CV_32F;
  * It needs vocabulary and extractor type from server to generate values in accordance with it
  * If the configurations differs, it causes errors in matching images
  */
-public class HistogramGenerator {
+class HistogramGenerator {
     private static opencv_xfeatures2d.SIFT extractor;
     private static BOWImgDescriptorExtractor descriptorExtractor;
     private static int vocabularySize;
@@ -32,7 +32,7 @@ public class HistogramGenerator {
      * @param extractorType extractor type fetched from server
      * @param matcherDescription matcher description fetched from server
      */
-    public static void update(Vocabulary vocabulary, String extractorType, MatcherDescription matcherDescription) {
+    static void update(Vocabulary vocabulary, String extractorType, MatcherDescription matcherDescription) {
         DescriptorMatcher matcher = MatcherProvider.getMatcherByDescription(matcherDescription);
         extractor = opencv_xfeatures2d.SIFT.create(); //(opencv_xfeatures2d.SIFT) ExtractorProvider.getExtractorByName(extractorType);
         descriptorExtractor = new BOWImgDescriptorExtractor(extractor, matcher);
@@ -46,7 +46,7 @@ public class HistogramGenerator {
      * @param image Image as {@link Mat} object. It should be grayscale image
      * @return image histogram
      */
-    public static float[] getHistogramForImage(Mat image) {
+    static float[] getHistogramForImage(Mat image) {
         KeyPointVector keyPointVector = new KeyPointVector();
         extractor.clear();
         extractor.detect(image, keyPointVector);
@@ -58,7 +58,7 @@ public class HistogramGenerator {
         return histogram;
     }
 
-    public static boolean isValid() {
+    static boolean isValid() {
         return extractor != null && descriptorExtractor != null;
     }
 

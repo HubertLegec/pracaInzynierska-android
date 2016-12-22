@@ -20,7 +20,7 @@ public class StartActivity extends Activity {
     @Background
     void waitMethod() {
         try {
-            Thread.sleep(2000, 0);
+            Thread.sleep(1000, 0);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

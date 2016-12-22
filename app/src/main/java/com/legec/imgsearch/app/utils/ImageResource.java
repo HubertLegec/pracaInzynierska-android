@@ -9,11 +9,11 @@ import org.springframework.core.io.ByteArrayResource;
  * Extends {@link ByteArrayResource} to implement {@link #getFilename()} method.
  * It is required by {@link RestClient} to send multipart request.
  */
-public class ImageResource extends ByteArrayResource {
+class ImageResource extends ByteArrayResource {
 
     private String filename;
 
-    public ImageResource(byte[] byteArray, String filename) {
+    ImageResource(byte[] byteArray, String filename) {
         super(byteArray);
         this.filename = filename;
     }
