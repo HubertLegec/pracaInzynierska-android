@@ -1,11 +1,11 @@
 package com.legec.imgsearch.app.opencv;
 
-
 import com.legec.imgsearch.app.exception.NotImplementedYetException;
 import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 
 import org.bytedeco.javacpp.opencv_features2d.BFMatcher;
 import org.bytedeco.javacpp.opencv_features2d.DescriptorMatcher;
+
 
 /**
  * Class responsible for creating matcher objects.

@@ -1,8 +1,10 @@
 package com.legec.imgsearch.app.opencv;
 
-
 import android.util.Log;
 
+import com.legec.imgsearch.app.exception.HistogramGeneratorNotConfiguredException;
+import com.legec.imgsearch.app.exception.ImageLoadingException;
+import com.legec.imgsearch.app.exception.MetadataNotLoadedException;
 import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 import com.legec.imgsearch.app.settings.GlobalSettings;
@@ -21,6 +23,7 @@ import java.util.List;
 
 import static org.bytedeco.javacpp.opencv_imgcodecs.imdecode;
 
+
 @EBean
 public class OpenCvService {
     private static final String TAG = "ImgSearch-OpenCv";
@@ -29,36 +32,41 @@ public class OpenCvService {
     @Bean
     FileUtils fileUtils;
 
-    public List<Float> generateHistogram(ByteArrayResource image) {
+    public List<Float> generateHistogram(ByteArrayResource image) throws MetadataNotLoadedException, ImageLoadingException {
         Log.i(TAG, "generate histogram");
-        if (!HistogramGenerator.isValid()) {
-            if (globalSettings.isMetadataLoaded()) {
-                try {
-                    updateConfiguration();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw new RuntimeException("Unexpected error during configuration update");
-                }
-            } else {
-                throw new RuntimeException("Metadata is not loaded properly!!!");
-            }
-        }
         byte[] imgBytes = image.getByteArray();
         if(imgBytes == null || imgBytes.length == 0) {
-            throw new RuntimeException("Image is not loaded properly");
+            throw new ImageLoadingException("Image is not loaded properly");
         }
         Mat imgMat = new Mat(imgBytes);
         Mat grayscaleImage = imdecode(imgMat, opencv_imgcodecs.IMREAD_GRAYSCALE);
-        float[] histogram = HistogramGenerator.getHistogramForImage(grayscaleImage);
-        return histogramToList(histogram);
+        try {
+            HistogramGenerator generator = getHistogramGenerator();
+            float[] histogram = generator.getHistogramForImage(grayscaleImage);
+            return histogramToList(histogram);
+        } catch (IOException e) {
+            throw new MetadataNotLoadedException("Can't open metadata files");
+        }
     }
 
-    public void updateConfiguration() throws IOException {
+    private HistogramGenerator getHistogramGenerator() throws IOException {
+        Log.d(TAG, "get histogram generator");
+        if (!globalSettings.isMetadataLoaded()) {
+            throw new MetadataNotLoadedException("Metadata isn't loaded");
+        }
+        try {
+            return HistogramGenerator.getInstance();
+        } catch (HistogramGeneratorNotConfiguredException e) {
+            return updateAndGetHistogramGenerator();
+        }
+    }
+
+    public HistogramGenerator updateAndGetHistogramGenerator() throws IOException {
         Log.i(TAG, "update configuration");
         Vocabulary v = fileUtils.getObjectFromFile(FileUtils.VOCABULARY_FILE_NAME, Vocabulary.class);
         String extractor = globalSettings.getExtractorType();
         MatcherDescription matcher = globalSettings.getMatcherType();
-        HistogramGenerator.update(v, extractor, matcher);
+        return HistogramGenerator.createInstance(v, extractor, matcher);
     }
 
     private List<Float> histogramToList(float[] histogram) {

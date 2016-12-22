@@ -7,14 +7,15 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.bytedeco.javacpp.FloatPointer;
 import org.bytedeco.javacpp.opencv_core.KeyPointVector;
 import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacpp.opencv_features2d;
 import org.bytedeco.javacpp.opencv_features2d.BOWImgDescriptorExtractor;
 import org.bytedeco.javacpp.opencv_features2d.DescriptorMatcher;
-import org.bytedeco.javacpp.opencv_xfeatures2d;
 
 import java.nio.FloatBuffer;
 import java.util.List;
 
 import static org.bytedeco.javacpp.opencv_core.CV_32F;
+
 
 /**
  * Class responsible for generating images histograms
@@ -22,9 +23,11 @@ import static org.bytedeco.javacpp.opencv_core.CV_32F;
  * If the configurations differs, it causes errors in matching images
  */
 class HistogramGenerator {
-    private static opencv_xfeatures2d.SIFT extractor;
-    private static BOWImgDescriptorExtractor descriptorExtractor;
-    private static int vocabularySize;
+    private opencv_features2d.Feature2D extractor;
+    private BOWImgDescriptorExtractor descriptorExtractor;
+    private int vocabularySize;
+
+    private static HistogramGenerator instance;
 
     /**
      * Updates generator instance
@@ -32,9 +35,9 @@ class HistogramGenerator {
      * @param extractorType extractor type fetched from server
      * @param matcherDescription matcher description fetched from server
      */
-    static void update(Vocabulary vocabulary, String extractorType, MatcherDescription matcherDescription) {
+    private HistogramGenerator(Vocabulary vocabulary, String extractorType, MatcherDescription matcherDescription) {
         DescriptorMatcher matcher = MatcherProvider.getMatcherByDescription(matcherDescription);
-        extractor = opencv_xfeatures2d.SIFT.create(); //(opencv_xfeatures2d.SIFT) ExtractorProvider.getExtractorByName(extractorType);
+        extractor = ExtractorProvider.getExtractorByName(extractorType);
         descriptorExtractor = new BOWImgDescriptorExtractor(extractor, matcher);
         Mat vocabularyMat = transformVocabularyToMat(vocabulary);
         vocabularySize = vocabulary.getSize();
@@ -46,7 +49,7 @@ class HistogramGenerator {
      * @param image Image as {@link Mat} object. It should be grayscale image
      * @return image histogram
      */
-    static float[] getHistogramForImage(Mat image) {
+    float[] getHistogramForImage(Mat image) {
         KeyPointVector keyPointVector = new KeyPointVector();
         extractor.clear();
         extractor.detect(image, keyPointVector);
@@ -56,10 +59,6 @@ class HistogramGenerator {
         float[] histogram = new float[floatBuffer.capacity()];
         floatBuffer.get(histogram);
         return histogram;
-    }
-
-    static boolean isValid() {
-        return extractor != null && descriptorExtractor != null;
     }
 
     private static Mat transformVocabularyToMat(Vocabulary vocabulary) {
@@ -79,5 +78,18 @@ class HistogramGenerator {
     private static Mat listOfFloatToMat(List<Float> row) {
         float[] array = ArrayUtils.toPrimitive(row.toArray(new Float[0]));
         return new Mat(1, row.size(), CV_32F, new FloatPointer(array));
+    }
+
+    static HistogramGenerator getInstance() {
+        if(instance != null) {
+            return instance;
+        } else {
+            throw new RuntimeException("Generator is not present");
+        }
+    }
+
+    static HistogramGenerator createInstance(Vocabulary vocabulary, String extractorType, MatcherDescription matcherDescription) {
+        instance = new HistogramGenerator(vocabulary, extractorType, matcherDescription);
+        return instance;
     }
 }

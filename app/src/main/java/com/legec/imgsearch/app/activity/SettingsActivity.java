@@ -91,7 +91,7 @@ public class SettingsActivity extends Activity {
                     settings.setExtractorType(extractorDescription.getExtractor());
                     settings.setMatcherType(matcherDescription);
                     settings.setMetadataLoaded(true);
-                    openCvService.updateConfiguration();
+                    openCvService.updateAndGetHistogramGenerator();
                     updateMetadataLoaded();
                 } catch (IOException e) {
                     onSaveLoadedMetadataError(activity);

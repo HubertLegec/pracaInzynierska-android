@@ -3,6 +3,8 @@ package com.legec.imgsearch.app.result;
 
 import android.util.Log;
 
+import com.legec.imgsearch.app.exception.ImageLoadingException;
+import com.legec.imgsearch.app.exception.MetadataNotLoadedException;
 import com.legec.imgsearch.app.opencv.OpenCvService;
 import com.legec.imgsearch.app.restConnection.ConnectionService;
 import com.legec.imgsearch.app.restConnection.dto.ImageDetails;
@@ -36,7 +38,7 @@ public class ResultService {
         }
     }
 
-    private List<ImageDetails> searchByHistogram(ByteArrayResource imageResource) {
+    private List<ImageDetails> searchByHistogram(ByteArrayResource imageResource) throws MetadataNotLoadedException, ImageLoadingException{
         Log.i(TAG, "search by histogram");
         List<Float> histogram = openCvService.generateHistogram(imageResource);
         return connectionService.findByHistogram(histogram);

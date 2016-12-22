@@ -21,6 +21,7 @@ import org.androidannotations.annotations.EActivity;
 import java.io.File;
 import java.io.IOException;
 
+
 @EActivity(R.layout.activity_menu)
 public class MenuActivity extends Activity {
     private static int RESULT_LOAD_IMAGE = 1;
