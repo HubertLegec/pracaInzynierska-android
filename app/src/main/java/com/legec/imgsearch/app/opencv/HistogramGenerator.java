@@ -1,5 +1,6 @@
 package com.legec.imgsearch.app.opencv;
 
+import com.legec.imgsearch.app.exception.HistogramGeneratorNotConfiguredException;
 import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 
@@ -7,9 +8,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.bytedeco.javacpp.FloatPointer;
 import org.bytedeco.javacpp.opencv_core.KeyPointVector;
 import org.bytedeco.javacpp.opencv_core.Mat;
-import org.bytedeco.javacpp.opencv_features2d;
 import org.bytedeco.javacpp.opencv_features2d.BOWImgDescriptorExtractor;
 import org.bytedeco.javacpp.opencv_features2d.DescriptorMatcher;
+import org.bytedeco.javacpp.opencv_features2d.Feature2D;
 
 import java.nio.FloatBuffer;
 import java.util.List;
@@ -23,7 +24,7 @@ import static org.bytedeco.javacpp.opencv_core.CV_32F;
  * If the configurations differs, it causes errors in matching images
  */
 class HistogramGenerator {
-    private opencv_features2d.Feature2D extractor;
+    private Feature2D extractor;
     private BOWImgDescriptorExtractor descriptorExtractor;
     private int vocabularySize;
 
@@ -51,7 +52,6 @@ class HistogramGenerator {
      */
     float[] getHistogramForImage(Mat image) {
         KeyPointVector keyPointVector = new KeyPointVector();
-        extractor.clear();
         extractor.detect(image, keyPointVector);
         Mat result = new Mat(1, vocabularySize, CV_32F);
         descriptorExtractor.compute(image, keyPointVector, result);
@@ -84,7 +84,7 @@ class HistogramGenerator {
         if(instance != null) {
             return instance;
         } else {
-            throw new RuntimeException("Generator is not present");
+            throw new HistogramGeneratorNotConfiguredException("Generator is not present");
         }
     }
 
