@@ -1,8 +1,8 @@
 package com.legec.imgsearch.app.restConnection;
 
-
 import android.util.Log;
 
+import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.restConnection.callbacks.LoadMetadataCallback;
 import com.legec.imgsearch.app.restConnection.callbacks.NoParamsCallback;
 import com.legec.imgsearch.app.restConnection.dto.ExtractorDescription;
@@ -15,18 +15,25 @@ import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.androidannotations.rest.spring.api.MediaType;
+import org.springframework.core.NestedRuntimeException;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.util.List;
+
 
 @EBean(scope = EBean.Scope.Singleton)
 public class ConnectionService {
     private static final String TAG = "CONNECTION_SERVICE";
-
+    @StringRes(R.string.server_unavailable_message)
+    String serverUnavailableMessage;
+    @StringRes(R.string.unexpected_error_message)
+    String unexpectedErrorMessage;
     @RestService
     RestClient restClient;
     @Bean
@@ -40,14 +47,12 @@ public class ConnectionService {
     @Background
     public void checkServerStatus(NoParamsCallback callback) {
         try {
-            String response = restClient.healthCheck().getBody();
-            if ("OK".equals(response)) {
-                callback.onSuccess();
-            } else {
-                callback.onError();
-            }
+            restClient.healthCheck();
+            callback.onSuccess();
+        } catch (ResourceAccessException e) {
+            callback.onError(serverUnavailableMessage);
         } catch (Exception e) {
-            callback.onError();
+            callback.onError(unexpectedErrorMessage);
         }
     }
 
@@ -58,8 +63,10 @@ public class ConnectionService {
             MatcherDescription matcherDescription = restClient.getMatcherDescription().getBody();
             Vocabulary vocabulary = restClient.getVocabulary().getBody();
             callback.onSuccess(vocabulary, extractorDescription, matcherDescription);
-        } catch (Exception e) {
-            callback.onError();
+        } catch (ResourceAccessException e) {
+            callback.onError(serverUnavailableMessage);
+        } catch (NestedRuntimeException e) {
+            callback.onError(unexpectedErrorMessage);
         }
     }
 
@@ -74,7 +81,9 @@ public class ConnectionService {
         mvMap.add("image", image);
         try {
             restClient.setHeader("Content-Type", MediaType.MULTIPART_FORM_DATA);
-            return restClient.find(mvMap).getBody().getImages();
+            return restClient.find(mvMap)
+                    .getBody()
+                    .getImages();
         } catch (Exception e) {
             Log.w(TAG, "findByImage: ", e);
             throw e;
@@ -83,7 +92,9 @@ public class ConnectionService {
 
     public List<ImageDetails> findByHistogram(List<Float> histogram) {
         try {
-            return restClient.findByHistogram(histogram).getBody().getImages();
+            return restClient.findByHistogram(histogram)
+                    .getBody()
+                    .getImages();
         } catch (Exception e) {
             Log.e(TAG, "find by histogram", e);
             throw e;

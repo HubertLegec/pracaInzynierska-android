@@ -11,6 +11,7 @@ import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.res.StringRes;
 
 
 /**
@@ -25,20 +26,18 @@ public class GlobalSettings {
     private static final String MATCHER_TYPE_KEY = "matcherType";
     private static final String MATCHER_NORM_KEY = "matcherNorm";
     private static final String QUERYING_METHOD_CHANGE = "queryingMethod";
+    @StringRes(R.string.default_server_address)
     private String defaultServer;
     private SharedPreferences preferences;
-
+    @StringRes(R.string.preference_file_key)
+    private String preferenceFileKey;
     @RootContext
     Context context;
 
 
     @AfterInject
     void afterSettingsContextInjection() {
-        this.preferences = context.getSharedPreferences(
-                context.getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-        );
-        this.defaultServer = context.getString(R.string.default_server_address);
+        this.preferences = context.getSharedPreferences(preferenceFileKey, Context.MODE_PRIVATE);
     }
 
     /**

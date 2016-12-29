@@ -67,7 +67,7 @@ public class SettingsActivity extends Activity {
             }
 
             @Override
-            public void onError() {
+            public void onError(String message) {
                 updateButtonColor(Color.RED);
             }
         });
@@ -80,8 +80,8 @@ public class SettingsActivity extends Activity {
         loadedCheckbox.setChecked(false);
         connectionService.loadMetadataFromServer(new LoadMetadataCallback() {
             @Override
-            public void onError() {
-                onLoadMetadataError(activity);
+            public void onError(String message) {
+                onLoadMetadataError(message);
             }
 
             @Override
@@ -110,10 +110,10 @@ public class SettingsActivity extends Activity {
     }
 
     @UiThread
-    void onLoadMetadataError(Activity activity) {
+    void onLoadMetadataError(String message) {
         settings.setMetadataLoaded(false);
-        new AlertDialog.Builder(activity)
-                .setMessage(R.string.load_metadata_error)
+        new AlertDialog.Builder(this)
+                .setMessage(message)
                 .setPositiveButton(android.R.string.ok, null)
                 .show();
     }

@@ -6,7 +6,7 @@ import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 
 public interface LoadMetadataCallback {
-    void onError();
+    void onError(String message);
     void onSuccess(
             Vocabulary vocabulary,
             ExtractorDescription extractorDescription,

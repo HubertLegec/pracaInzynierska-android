@@ -86,11 +86,11 @@ public class ImageSaver {
     }
 
     /**
-     * Resizes and compresses image. Shorter edge is set to {@link #IMG_SHORTER_EDGE_SIZE} and longer is proportional to it.
+     * Resize and compress image. Shorter edge is set to {@link #IMG_SHORTER_EDGE_SIZE} and longer is proportional to it.
      * @param img Input image to process
      * @return Processed image as {@link ByteArrayOutputStream}
      */
-    private ByteArrayOutputStream resizeAndCompressImage(Bitmap img) {
+    private static ByteArrayOutputStream resizeAndCompressImage(Bitmap img) {
         Log.i(TAG, "resize and compress image");
         int height = img.getHeight();
         int width = img.getWidth();

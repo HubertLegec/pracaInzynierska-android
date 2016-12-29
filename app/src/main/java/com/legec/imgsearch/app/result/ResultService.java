@@ -1,6 +1,5 @@
 package com.legec.imgsearch.app.result;
 
-
 import android.util.Log;
 
 import com.legec.imgsearch.app.exception.ImageLoadingException;
@@ -16,6 +15,7 @@ import org.androidannotations.annotations.EBean;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.util.List;
+
 
 @EBean
 public class ResultService {
