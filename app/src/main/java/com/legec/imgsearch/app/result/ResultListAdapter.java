@@ -20,8 +20,6 @@ import java.util.List;
 @EBean
 public class ResultListAdapter extends BaseAdapter {
     private final List<ImageDetails> results = new ArrayList<>();
-    private ResultItemView selectedView = null;
-
     @RootContext
     Activity context;
 
@@ -66,18 +64,6 @@ public class ResultListAdapter extends BaseAdapter {
                 .into(resultItemView.imageView);
 
         return resultItemView;
-    }
-
-    public void updateSelectedView(View view) {
-        if(selectedView != null) {
-            selectedView.setSelected(false);
-        }
-        if(view.equals(selectedView)) {
-            selectedView = null;
-        } else {
-            selectedView = (ResultItemView) view;
-            selectedView.setSelected(true);
-        }
     }
 
 }

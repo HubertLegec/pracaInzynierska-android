@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">ImgSearch</string>
-    <string name="images">Results:</string>
+    <string name="results">Results:</string>
     <string name="no_result">No result !</string>
     <string name="no_good_result">No good result</string>
     <string name="name">Name</string>

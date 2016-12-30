@@ -1,17 +1,18 @@
 package com.legec.imgsearch.app.activity;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.restConnection.dto.ImageDetails;
+import com.legec.imgsearch.app.result.DetailsDialogCallback;
 import com.legec.imgsearch.app.result.ResultListAdapter;
 import com.legec.imgsearch.app.result.ResultService;
+import com.legec.imgsearch.app.result.ResultDetailsDialog;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -24,11 +25,9 @@ import java.util.List;
 
 
 @EActivity(R.layout.activity_result)
-public class ResultActivity extends Activity {
+public class ResultActivity extends ListActivity {
     @ViewById
-    ListView resultList;
-    @ViewById
-    ImageView selectedImage;
+    ListView list;
     @Bean
     ResultListAdapter resultListAdapter;
     @Bean
@@ -36,21 +35,25 @@ public class ResultActivity extends Activity {
 
     @AfterViews
     void bindAdapter() {
-        resultList.setAdapter(resultListAdapter);
-        resultList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        setListAdapter(resultListAdapter);
+        list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         sendImage();
         final Activity activity = this;
 
-        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                resultListAdapter.updateSelectedView(view);
-                Glide.with(activity)
-                        .load(resultListAdapter.getItem(position).getUrl())
-                        .fitCenter()
-                        .placeholder(R.drawable.progress_spinner)
-                        .crossFade()
-                        .into(selectedImage);
+                ImageDetails details = resultListAdapter.getItem(position);
+                DetailsDialogCallback callback = new DetailsDialogCallback() {
+                    @Override
+                    public void onDialogClose(int result) {
+                        if (result == ResultDetailsDialog.SHOW_BUTTON) {
+                            //TODO
+                        }
+                    }
+                };
+                ResultDetailsDialog detailsDialog = new ResultDetailsDialog(details, activity, callback);
+                detailsDialog.show();
             }
         });
     }

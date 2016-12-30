@@ -2,13 +2,9 @@ package com.legec.imgsearch.app.opencv;
 
 import android.util.Log;
 
-import com.legec.imgsearch.app.exception.HistogramGeneratorNotConfiguredException;
 import com.legec.imgsearch.app.exception.ImageLoadingException;
 import com.legec.imgsearch.app.exception.MetadataNotLoadedException;
-import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
-import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 import com.legec.imgsearch.app.settings.GlobalSettings;
-import com.legec.imgsearch.app.utils.FileUtils;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -29,8 +25,6 @@ public class OpenCvService {
     private static final String TAG = "ImgSearch-OpenCv";
     @Bean
     GlobalSettings globalSettings;
-    @Bean
-    FileUtils fileUtils;
 
     public List<Float> generateHistogram(ByteArrayResource image) throws MetadataNotLoadedException, ImageLoadingException {
         Log.i(TAG, "generate histogram");
@@ -42,7 +36,9 @@ public class OpenCvService {
         Mat grayscaleImage = imdecode(imgMat, opencv_imgcodecs.IMREAD_GRAYSCALE);
         try {
             HistogramGenerator generator = getHistogramGenerator();
+            Log.i(TAG, "generate histogram");
             float[] histogram = generator.getHistogramForImage(grayscaleImage);
+            Log.i(TAG, "histogram ready");
             return histogramToList(histogram);
         } catch (IOException e) {
             throw new MetadataNotLoadedException("Can't open metadata files");
@@ -54,18 +50,7 @@ public class OpenCvService {
         if (!globalSettings.isMetadataLoaded()) {
             throw new MetadataNotLoadedException("Metadata isn't loaded");
         }
-        try {
-            return HistogramGenerator.getInstance();
-        } catch (HistogramGeneratorNotConfiguredException e) {
-            return updateAndGetHistogramGenerator();
-        }
-    }
-
-    public HistogramGenerator updateAndGetHistogramGenerator() throws IOException {
-        Log.i(TAG, "update configuration");
-        Vocabulary v = fileUtils.getObjectFromFile(FileUtils.VOCABULARY_FILE_NAME, Vocabulary.class);
-        OpenCvConfig openCvConfig = globalSettings.getOpenCvConfig();
-        return HistogramGenerator.createInstance(v, openCvConfig);
+        return new HistogramGenerator(globalSettings.getVocabulary(), globalSettings.getOpenCvConfig());
     }
 
     private List<Float> histogramToList(float[] histogram) {

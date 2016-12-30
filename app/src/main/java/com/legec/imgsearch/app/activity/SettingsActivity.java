@@ -16,7 +16,6 @@ import com.legec.imgsearch.app.restConnection.callbacks.NoParamsCallback;
 import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 import com.legec.imgsearch.app.settings.GlobalSettings;
-import com.legec.imgsearch.app.utils.FileUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -41,8 +40,6 @@ public class SettingsActivity extends Activity {
     Switch queryingSwitch;
     @Bean
     ConnectionService connectionService;
-    @Bean
-    FileUtils fileUtils;
     @Bean
     GlobalSettings settings;
     @Bean
@@ -86,10 +83,10 @@ public class SettingsActivity extends Activity {
             @Override
             public void onSuccess(Vocabulary vocabulary, OpenCvConfig openCvConfig) {
                 try {
-                    fileUtils.saveObjectToFile(vocabulary, FileUtils.VOCABULARY_FILE_NAME);
+
                     settings.setOpenCvConfig(openCvConfig);
                     settings.setMetadataLoaded(true);
-                    openCvService.updateAndGetHistogramGenerator();
+                    settings.setVocabulary(vocabulary);
                     updateMetadataLoaded();
                 } catch (IOException e) {
                     onSaveLoadedMetadataError(activity);

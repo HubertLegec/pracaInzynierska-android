@@ -1,6 +1,5 @@
 package com.legec.imgsearch.app.opencv;
 
-import com.legec.imgsearch.app.exception.HistogramGeneratorNotConfiguredException;
 import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 
@@ -28,14 +27,12 @@ class HistogramGenerator {
     private BOWImgDescriptorExtractor descriptorExtractor;
     private int vocabularySize;
 
-    private static HistogramGenerator instance;
-
     /**
-     * Updates generator instance
+     * Create generator instance
      * @param vocabulary vocabulary fetched from server
      * @param openCvConfig extractor and matcher parameters
      */
-    private HistogramGenerator(Vocabulary vocabulary, OpenCvConfig openCvConfig) {
+    HistogramGenerator(Vocabulary vocabulary, OpenCvConfig openCvConfig) {
         DescriptorMatcher matcher = MatcherProvider.getMatcherByDescription(openCvConfig);
         extractor = ExtractorProvider.getExtractorByName(openCvConfig.getExtractor());
         descriptorExtractor = new BOWImgDescriptorExtractor(extractor, matcher);
@@ -77,18 +74,5 @@ class HistogramGenerator {
     private static Mat listOfFloatToMat(List<Float> row) {
         float[] array = ArrayUtils.toPrimitive(row.toArray(new Float[0]));
         return new Mat(1, row.size(), CV_32F, new FloatPointer(array));
-    }
-
-    static HistogramGenerator getInstance() {
-        if(instance != null) {
-            return instance;
-        } else {
-            throw new HistogramGeneratorNotConfiguredException("Generator is not present");
-        }
-    }
-
-    static HistogramGenerator createInstance(Vocabulary vocabulary, OpenCvConfig openCvConfig) {
-        instance = new HistogramGenerator(vocabulary, openCvConfig);
-        return instance;
     }
 }

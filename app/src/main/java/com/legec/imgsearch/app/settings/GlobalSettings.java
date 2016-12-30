@@ -8,18 +8,23 @@ import android.content.SharedPreferences.Editor;
 import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.exception.MetadataNotLoadedException;
 import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
+import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
+import com.legec.imgsearch.app.utils.FileUtils;
 
 import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.res.StringRes;
+
+import java.io.IOException;
 
 
 /**
  * Class responsible for providing and saving user preferences.
  * It uses Android SHaredPreferences to store data
  */
-@EBean
+@EBean(scope = EBean.Scope.Singleton)
 public class GlobalSettings {
     private static final String SERVER_ADDRESS_KEY = "serverAddress";
     private static final String METADATA_LOADED_KEY = "metadataLoaded";
@@ -29,12 +34,16 @@ public class GlobalSettings {
     private static final String QUERYING_METHOD_CHANGE = "queryingMethod";
     @StringRes(R.string.default_server_address)
     String defaultServer;
-    private SharedPreferences preferences;
     @StringRes(R.string.preference_file_key)
     String preferenceFileKey;
     @RootContext
     Context context;
+    @Bean
+    FileUtils fileUtils;
 
+    private SharedPreferences preferences;
+    private OpenCvConfig openCvConfig;
+    private Vocabulary vocabulary;
 
     @AfterInject
     void afterSettingsContextInjection() {
@@ -81,28 +90,22 @@ public class GlobalSettings {
      * @return @{@link OpenCvConfig} object with configuration parameters
      */
     public OpenCvConfig getOpenCvConfig() {
-        String matcher = preferences.getString(MATCHER_TYPE_KEY, null);
-        int normType = preferences.getInt(MATCHER_NORM_KEY, 0);
-        String extractor = preferences.getString(EXTRACTOR_TYPE_KEY, null);
-        OpenCvConfig openCvConfig = new OpenCvConfig(matcher, normType, extractor);
-        if (!openCvConfig.isValid()) {
+        OpenCvConfig config = openCvConfig != null ? openCvConfig : loadConfigFromPreferences();
+        if (!config.isValid()) {
             throw new MetadataNotLoadedException("OpenCV configuration params are not loaded yet");
         }
-        return openCvConfig;
+        return config;
     }
 
     /**
      * Stores matcher, norm type and extractor in SharedPreferences.
-     * If matcher or extractor name is null or is empty nothing happens.
-     * @param openCvConfig description of OpenCV configuration
+     * @param config description of OpenCV configuration
      */
-    public void setOpenCvConfig(OpenCvConfig openCvConfig) {
-        if (!openCvConfig.isValid()) {
-            return;
-        }
-        setStringProperty(MATCHER_TYPE_KEY, openCvConfig.getMatcher_type());
-        setIntProperty(MATCHER_NORM_KEY, openCvConfig.getNorm_type());
-        setStringProperty(EXTRACTOR_TYPE_KEY, openCvConfig.getExtractor());
+    public void setOpenCvConfig(OpenCvConfig config) {
+        openCvConfig = config;
+        setStringProperty(MATCHER_TYPE_KEY, config.getMatcher_type());
+        setIntProperty(MATCHER_NORM_KEY, config.getNorm_type());
+        setStringProperty(EXTRACTOR_TYPE_KEY, config.getExtractor());
     }
 
     /**
@@ -123,14 +126,40 @@ public class GlobalSettings {
         return preferences.getBoolean(QUERYING_METHOD_CHANGE, false);
     }
 
-    private boolean setStringProperty(String key, String value) {
-        if (value == null || value.isEmpty()) {
-            return false;
+    /**
+     * Return vocabulary. If not loaded, load it from file.
+     * @return vocabulary
+     * @throws IOException when loading from file fail
+     */
+    public Vocabulary getVocabulary() throws IOException{
+        if (vocabulary != null) {
+            return vocabulary;
         }
+        vocabulary = fileUtils.getObjectFromFile(FileUtils.VOCABULARY_FILE_NAME, Vocabulary.class);
+        return vocabulary;
+    }
+
+    /**
+     * Save vocabulary to file and store it in class variable
+     * @param vocabulary vocabulary to save
+     * @throws IOException when saving to file fail
+     */
+    public void setVocabulary(Vocabulary vocabulary) throws IOException {
+        fileUtils.saveObjectToFile(vocabulary, FileUtils.VOCABULARY_FILE_NAME);
+        this.vocabulary = vocabulary;
+    }
+
+    private OpenCvConfig loadConfigFromPreferences() {
+        String matcher = preferences.getString(MATCHER_TYPE_KEY, null);
+        int normType = preferences.getInt(MATCHER_NORM_KEY, 0);
+        String extractor = preferences.getString(EXTRACTOR_TYPE_KEY, null);
+        return new OpenCvConfig(matcher, normType, extractor);
+    }
+
+    private void setStringProperty(String key, String value) {
         Editor editor = preferences.edit();
         editor.putString(key, value);
         editor.apply();
-        return true;
     }
 
     private void setIntProperty(String key, int value) {
