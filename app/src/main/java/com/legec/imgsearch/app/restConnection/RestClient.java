@@ -1,8 +1,7 @@
 package com.legec.imgsearch.app.restConnection;
 
-import com.legec.imgsearch.app.restConnection.dto.ExtractorDescription;
 import com.legec.imgsearch.app.restConnection.dto.Histogram;
-import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
+import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
 import com.legec.imgsearch.app.restConnection.dto.SearchResponse;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 
@@ -25,11 +24,8 @@ import java.util.List;
 @Rest(rootUrl = "http://51.255.204.169", converters = {MappingJackson2HttpMessageConverter.class, StringHttpMessageConverter.class, FormHttpMessageConverter.class})
 public interface RestClient extends RestClientHeaders {
 
-    @Get("/data/extractor")
-    ResponseEntity<ExtractorDescription> getExtractorDescription();
-
-    @Get("/data/matcher")
-    ResponseEntity<MatcherDescription> getMatcherDescription();
+    @Get("/data/openCvConfig")
+    ResponseEntity<OpenCvConfig> getOpenCvConfig();
 
     @Get("/data/vocabulary")
     ResponseEntity<Vocabulary> getVocabulary();

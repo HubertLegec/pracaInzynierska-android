@@ -5,7 +5,7 @@ import android.util.Log;
 import com.legec.imgsearch.app.exception.HistogramGeneratorNotConfiguredException;
 import com.legec.imgsearch.app.exception.ImageLoadingException;
 import com.legec.imgsearch.app.exception.MetadataNotLoadedException;
-import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
+import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 import com.legec.imgsearch.app.settings.GlobalSettings;
 import com.legec.imgsearch.app.utils.FileUtils;
@@ -64,9 +64,8 @@ public class OpenCvService {
     public HistogramGenerator updateAndGetHistogramGenerator() throws IOException {
         Log.i(TAG, "update configuration");
         Vocabulary v = fileUtils.getObjectFromFile(FileUtils.VOCABULARY_FILE_NAME, Vocabulary.class);
-        String extractor = globalSettings.getExtractorType();
-        MatcherDescription matcher = globalSettings.getMatcherType();
-        return HistogramGenerator.createInstance(v, extractor, matcher);
+        OpenCvConfig openCvConfig = globalSettings.getOpenCvConfig();
+        return HistogramGenerator.createInstance(v, openCvConfig);
     }
 
     private List<Float> histogramToList(float[] histogram) {

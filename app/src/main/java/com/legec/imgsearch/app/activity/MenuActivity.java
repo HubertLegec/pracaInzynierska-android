@@ -94,7 +94,7 @@ public class MenuActivity extends Activity {
             ImagePreviewActivity_.intent(this)
                     .extra("imageUri", selectedImage)
                     .start();
-        } else if(requestCode == RESULT_TAKE_PICTURE && resultCode == RESULT_OK) {
+        } else if (requestCode == RESULT_TAKE_PICTURE && resultCode == RESULT_OK) {
             imageSaver.galleryAddPic();
             ImagePreviewActivity_.intent(this)
                     .extra("imageUri", photoUri)
@@ -112,7 +112,7 @@ public class MenuActivity extends Activity {
             } else {
                 startCameraForResult();
             }
-        } else if (requestCode == REQUEST_EXTERNAL_STORAGE_PERMISSION){
+        } else if (requestCode == REQUEST_EXTERNAL_STORAGE_PERMISSION) {
             if (grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 showErrorDialog(R.string.external_storage_message);
             } else {

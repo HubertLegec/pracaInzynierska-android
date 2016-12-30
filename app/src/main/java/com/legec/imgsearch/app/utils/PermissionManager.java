@@ -25,6 +25,6 @@ public class PermissionManager {
     }
 
     private void requestPermission(String permission, int requestId) {
-            ActivityCompat.requestPermissions(context, new String[]{permission}, requestId);
+        ActivityCompat.requestPermissions(context, new String[]{permission}, requestId);
     }
 }

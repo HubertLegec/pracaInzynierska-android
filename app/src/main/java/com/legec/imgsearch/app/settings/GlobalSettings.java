@@ -6,7 +6,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.legec.imgsearch.app.R;
-import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
+import com.legec.imgsearch.app.exception.MetadataNotLoadedException;
+import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
@@ -27,10 +28,10 @@ public class GlobalSettings {
     private static final String MATCHER_NORM_KEY = "matcherNorm";
     private static final String QUERYING_METHOD_CHANGE = "queryingMethod";
     @StringRes(R.string.default_server_address)
-    private String defaultServer;
+    String defaultServer;
     private SharedPreferences preferences;
     @StringRes(R.string.preference_file_key)
-    private String preferenceFileKey;
+    String preferenceFileKey;
     @RootContext
     Context context;
 
@@ -76,45 +77,32 @@ public class GlobalSettings {
     }
 
     /**
-     * Returns descriptor type as string
-     * @return descriptor type, or null if not present
+     * Returns OpenCV config - extractor, matcher and norm type
+     * @return @{@link OpenCvConfig} object with configuration parameters
      */
-    public String getExtractorType() {
-        return preferences.getString(EXTRACTOR_TYPE_KEY, null);
-    }
-
-    /**
-     * Stores extractor type in SharedPreferences. If given value is null or is empty nothing happens.
-     * @param extractorType Descriptor type as string. Should not be null or empty
-     */
-    public void setExtractorType(String extractorType) {
-        setStringProperty(EXTRACTOR_TYPE_KEY, extractorType);
-    }
-
-    /**
-     * Returns matcher type as string
-     * @return matcher type, or null if not present
-     */
-    public MatcherDescription getMatcherType() {
-        String name = preferences.getString(MATCHER_TYPE_KEY, null);
+    public OpenCvConfig getOpenCvConfig() {
+        String matcher = preferences.getString(MATCHER_TYPE_KEY, null);
         int normType = preferences.getInt(MATCHER_NORM_KEY, 0);
-        if (name == null) {
-            return null;
+        String extractor = preferences.getString(EXTRACTOR_TYPE_KEY, null);
+        OpenCvConfig openCvConfig = new OpenCvConfig(matcher, normType, extractor);
+        if (!openCvConfig.isValid()) {
+            throw new MetadataNotLoadedException("OpenCV configuration params are not loaded yet");
         }
-        MatcherDescription description = new MatcherDescription();
-        description.getMatcher().setMatcher_type(name);
-        description.getMatcher().setNorm_type(normType);
-        return description;
+        return openCvConfig;
     }
 
     /**
-     * Stores matcher type in SharedPreferences. If matcher name is null or is empty nothing happens.
-     * @param matcherType Matcher definition
+     * Stores matcher, norm type and extractor in SharedPreferences.
+     * If matcher or extractor name is null or is empty nothing happens.
+     * @param openCvConfig description of OpenCV configuration
      */
-    public void setMatcherType(MatcherDescription matcherType) {
-        if (setStringProperty(MATCHER_TYPE_KEY, matcherType.getMatcher().getMatcher_type())) {
-            setIntProperty(MATCHER_NORM_KEY, matcherType.getMatcher().getNorm_type());
+    public void setOpenCvConfig(OpenCvConfig openCvConfig) {
+        if (!openCvConfig.isValid()) {
+            return;
         }
+        setStringProperty(MATCHER_TYPE_KEY, openCvConfig.getMatcher_type());
+        setIntProperty(MATCHER_NORM_KEY, openCvConfig.getNorm_type());
+        setStringProperty(EXTRACTOR_TYPE_KEY, openCvConfig.getExtractor());
     }
 
     /**

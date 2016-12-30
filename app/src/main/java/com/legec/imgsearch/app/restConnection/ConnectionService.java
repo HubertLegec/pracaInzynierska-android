@@ -5,9 +5,8 @@ import android.util.Log;
 import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.restConnection.callbacks.LoadMetadataCallback;
 import com.legec.imgsearch.app.restConnection.callbacks.NoParamsCallback;
-import com.legec.imgsearch.app.restConnection.dto.ExtractorDescription;
 import com.legec.imgsearch.app.restConnection.dto.ImageDetails;
-import com.legec.imgsearch.app.restConnection.dto.MatcherDescription;
+import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 import com.legec.imgsearch.app.settings.GlobalSettings;
 
@@ -59,10 +58,9 @@ public class ConnectionService {
     @Background
     public void loadMetadataFromServer(LoadMetadataCallback callback) {
         try {
-            ExtractorDescription extractorDescription = restClient.getExtractorDescription().getBody();
-            MatcherDescription matcherDescription = restClient.getMatcherDescription().getBody();
+            OpenCvConfig openCvConfig = restClient.getOpenCvConfig().getBody();
             Vocabulary vocabulary = restClient.getVocabulary().getBody();
-            callback.onSuccess(vocabulary, extractorDescription, matcherDescription);
+            callback.onSuccess(vocabulary, openCvConfig);
         } catch (ResourceAccessException e) {
             callback.onError(serverUnavailableMessage);
         } catch (NestedRuntimeException e) {
