@@ -9,7 +9,6 @@ import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.exception.MetadataNotLoadedException;
 import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
-import com.legec.imgsearch.app.utils.FileUtils;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
@@ -39,7 +38,7 @@ public class GlobalSettings {
     @RootContext
     Context context;
     @Bean
-    FileUtils fileUtils;
+    VocabularyFileService vocabularyFileService;
 
     private SharedPreferences preferences;
     private OpenCvConfig openCvConfig;
@@ -135,7 +134,7 @@ public class GlobalSettings {
         if (vocabulary != null) {
             return vocabulary;
         }
-        vocabulary = fileUtils.getObjectFromFile(FileUtils.VOCABULARY_FILE_NAME, Vocabulary.class);
+        vocabulary = vocabularyFileService.getVocabularyFromFile();
         return vocabulary;
     }
 
@@ -145,7 +144,7 @@ public class GlobalSettings {
      * @throws IOException when saving to file fail
      */
     public void setVocabulary(Vocabulary vocabulary) throws IOException {
-        fileUtils.saveObjectToFile(vocabulary, FileUtils.VOCABULARY_FILE_NAME);
+        vocabularyFileService.saveVocabularyToFile(vocabulary);
         this.vocabulary = vocabulary;
     }
 

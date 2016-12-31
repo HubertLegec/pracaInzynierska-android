@@ -1,6 +1,5 @@
 package com.legec.imgsearch.app.opencv;
 
-import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -12,6 +11,7 @@ import org.bytedeco.javacpp.opencv_features2d.DescriptorMatcher;
 import org.bytedeco.javacpp.opencv_features2d.Feature2D;
 
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.bytedeco.javacpp.opencv_core.CV_32F;
@@ -30,11 +30,10 @@ class HistogramGenerator {
     /**
      * Create generator instance
      * @param vocabulary vocabulary fetched from server
-     * @param openCvConfig extractor and matcher parameters
+     * @param extractor
      */
-    HistogramGenerator(Vocabulary vocabulary, OpenCvConfig openCvConfig) {
-        DescriptorMatcher matcher = MatcherProvider.getMatcherByDescription(openCvConfig);
-        extractor = ExtractorProvider.getExtractorByName(openCvConfig.getExtractor());
+    HistogramGenerator(Vocabulary vocabulary, Feature2D extractor, DescriptorMatcher matcher) {
+        this.extractor = extractor;
         descriptorExtractor = new BOWImgDescriptorExtractor(extractor, matcher);
         Mat vocabularyMat = transformVocabularyToMat(vocabulary);
         vocabularySize = vocabulary.getSize();
@@ -46,7 +45,7 @@ class HistogramGenerator {
      * @param image Image as {@link Mat} object. It should be grayscale image
      * @return image histogram
      */
-    float[] getHistogramForImage(Mat image) {
+    List<Float> getHistogramForImage(Mat image) {
         KeyPointVector keyPointVector = new KeyPointVector();
         extractor.detect(image, keyPointVector);
         Mat result = new Mat(1, vocabularySize, CV_32F);
@@ -54,7 +53,7 @@ class HistogramGenerator {
         FloatBuffer floatBuffer = result.createBuffer();
         float[] histogram = new float[floatBuffer.capacity()];
         floatBuffer.get(histogram);
-        return histogram;
+        return histogramToList(histogram);
     }
 
     private static Mat transformVocabularyToMat(Vocabulary vocabulary) {
@@ -74,5 +73,9 @@ class HistogramGenerator {
     private static Mat listOfFloatToMat(List<Float> row) {
         float[] array = ArrayUtils.toPrimitive(row.toArray(new Float[0]));
         return new Mat(1, row.size(), CV_32F, new FloatPointer(array));
+    }
+
+    private List<Float> histogramToList(float[] histogram) {
+        return Arrays.asList(ArrayUtils.toObject(histogram));
     }
 }

@@ -17,23 +17,22 @@ import org.robolectric.annotation.Config;
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class GlobalSettingsTest {
-
-    private Context instrumantationCtx;
+    private Context ctx;
 
     @Before
     public void setup() {
-        instrumantationCtx = RuntimeEnvironment.application;
+        ctx = RuntimeEnvironment.application;
     }
 
     @Test
     public void testDefaultServerAddress(){
-        GlobalSettings settings = GlobalSettings_.getInstance_(instrumantationCtx);
+        GlobalSettings settings = GlobalSettings_.getInstance_(ctx);
         Assert.assertEquals("51.255.204.169", settings.getServerAddress());
     }
 
     @Test
     public void testChangeServerAddress() {
-        GlobalSettings settings = GlobalSettings_.getInstance_(instrumantationCtx);
+        GlobalSettings settings = GlobalSettings_.getInstance_(ctx);
         Assert.assertEquals("51.255.204.169", settings.getServerAddress());
 
         String newAddress = "1.1.1.1";

@@ -1,8 +1,8 @@
-package com.legec.imgsearch.app;
+package com.legec.imgsearch.app.activity;
 
 import android.app.Activity;
 
-import com.legec.imgsearch.app.activity.MenuActivity_;
+import com.legec.imgsearch.app.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;

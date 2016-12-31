@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true">
         <activity
-            android:name=".StartActivity_"
+            android:name="activity.StartActivity_"
             android:noHistory="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
