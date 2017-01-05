@@ -1,107 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="20dp"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@color/primary_light">
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:background="@color/primary_light">
 
-    <TextView
-        android:text="@string/server_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/primary" />
+        <TextView
+            android:text="@string/server_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="18sp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/primary" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/serverAddress"
-        android:layout_marginBottom="30dp"
-        android:textColor="@color/primary"
-        android:textColorLink="@color/accent" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/serverAddress"
+            android:layout_marginBottom="30dp"
+            android:textColor="@color/primary"
+            android:textColorLink="@color/accent" />
 
-    <Switch
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/queryingSwitch"
-        android:textOff="@string/image"
-        android:textOn="@string/histogram"
-        android:thumbTint="@color/primary"
-        android:trackTint="@color/accent"
-        android:showText="true"
-        android:switchTextAppearance="@style/TextAppearance.AppCompat"
-        android:checked="false"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:splitTrack="false"
-        android:text="@string/querying_method"
-        android:textSize="18sp"
-        android:layout_marginBottom="30dp"
-        android:textColor="@color/primary" />
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/queryingSwitch"
+            android:textOff="@string/image"
+            android:textOn="@string/histogram"
+            android:thumbTint="@color/primary"
+            android:trackTint="@color/accent"
+            android:showText="true"
+            android:switchTextAppearance="@style/TextAppearance.AppCompat"
+            android:checked="false"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:splitTrack="false"
+            android:text="@string/querying_method"
+            android:textSize="18sp"
+            android:layout_marginBottom="30dp"
+            android:textColor="@color/primary" />
 
-    <TextView
-        android:id="@+id/limitLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/resultListMaxSize"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/primary" />
+        <TextView
+            android:id="@+id/limitLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/resultListMaxSize"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="18sp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/primary" />
 
-    <SeekBar
-        android:id="@+id/limitSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:max="20"
-        android:theme="@style/Widget.AppCompat.SeekBar.Discrete"/>
+        <SeekBar
+            android:id="@+id/limitSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:max="20"
+            android:theme="@style/Widget.AppCompat.SeekBar.Discrete"/>
 
-    <TextView
-        android:text="@string/connection_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp"
-        android:textColor="@color/primary" />
+        <TextView
+            android:text="@string/connection_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="18sp"
+            android:textColor="@color/primary" />
 
-    <Button
-        android:text="Test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/testButton"
-        android:layout_marginBottom="30dp"
-        android:background="@color/primary_dark"
-        android:textColor="@color/primary_light" />
+        <Button
+            android:text="Test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/testButton"
+            android:layout_marginBottom="30dp"
+            android:background="@color/primary_dark"
+            android:textColor="@color/primary_light" />
 
-    <TextView
-        android:text="Metadata"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView4"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp"
-        android:textColor="@color/primary" />
+        <TextView
+            android:text="Metadata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="18sp"
+            android:textColor="@color/primary" />
 
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/loadedCheckbox"
-        android:text="@string/is_metadata_loaded"
-        android:clickable="false"
-        android:textColor="@color/primary" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loadedCheckbox"
+            android:text="@string/is_metadata_loaded"
+            android:clickable="false"
+            android:textColor="@color/primary" />
 
-    <Button
-        android:text="@string/reload_metadata"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/reloadButton"
-        android:background="@color/primary_dark"
-        android:textColor="@color/primary_light" />
+        <Button
+            android:text="@string/reload_metadata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/reloadButton"
+            android:background="@color/primary_dark"
+            android:textColor="@color/primary_light" />
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
