@@ -9,6 +9,7 @@ public class ImageDetails {
     private Double matchRate;
     private String url;
     private String name;
+    private String pageUrl;
 
     public Double getMatchRate() {
         return matchRate;
@@ -32,5 +33,13 @@ public class ImageDetails {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPageUrl() {
+        return pageUrl;
+    }
+
+    public void setPageUrl(String pageUrl) {
+        this.pageUrl = pageUrl;
     }
 }

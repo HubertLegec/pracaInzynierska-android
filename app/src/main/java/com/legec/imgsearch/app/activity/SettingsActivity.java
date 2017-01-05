@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.opencv.OpenCvService;
@@ -22,14 +24,17 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.SeekBarProgressChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 
 import java.io.IOException;
 
 
 @EActivity(R.layout.activity_settings)
 public class SettingsActivity extends Activity {
+    private static final int MIN_LIMIT = 1;
     @ViewById
     EditText serverAddress;
     @ViewById
@@ -38,6 +43,12 @@ public class SettingsActivity extends Activity {
     CheckBox loadedCheckbox;
     @ViewById
     Switch queryingSwitch;
+    @ViewById
+    SeekBar limitSeekBar;
+    @ViewById
+    TextView limitLabel;
+    @StringRes
+    String resultListMaxSize;
     @Bean
     ConnectionService connectionService;
     @Bean
@@ -51,6 +62,8 @@ public class SettingsActivity extends Activity {
         serverAddress.setText(settings.getServerAddress());
         loadedCheckbox.setChecked(settings.isMetadataLoaded());
         queryingSwitch.setChecked(settings.getQueryingMethod());
+        limitSeekBar.setProgress(settings.getResponseLimit());
+        limitLabel.setText(resultListMaxSize + " " + limitSeekBar.getProgress());
     }
 
     @Click(R.id.testButton)
@@ -111,6 +124,17 @@ public class SettingsActivity extends Activity {
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, null)
                 .show();
+    }
+
+    @SeekBarProgressChange(R.id.limitSeekBar)
+    void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (progress < MIN_LIMIT) {
+            seekBar.setProgress(MIN_LIMIT);
+            settings.setResponseLimit(MIN_LIMIT);
+        } else {
+            settings.setResponseLimit(progress);
+        }
+        limitLabel.setText(resultListMaxSize + " " + seekBar.getProgress());
     }
 
     @CheckedChange(R.id.queryingSwitch)

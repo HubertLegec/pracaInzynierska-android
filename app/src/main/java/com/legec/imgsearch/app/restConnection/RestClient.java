@@ -1,6 +1,5 @@
 package com.legec.imgsearch.app.restConnection;
 
-import com.legec.imgsearch.app.restConnection.dto.Histogram;
 import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
 import com.legec.imgsearch.app.restConnection.dto.SearchResponse;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
@@ -33,19 +32,12 @@ public interface RestClient extends RestClientHeaders {
     @Get("/healthCheck")
     ResponseEntity<String> healthCheck();
 
-    @Post("/findByHist")
-    ResponseEntity<SearchResponse> findByHistogram(@Body List<Float> histogram);
-
     @Post("/findByHist/{limit}")
-    ResponseEntity<SearchResponse> findByHistogramWithLimit(@Body Histogram histogram, @Path int limit);
-
-    @Post("/find")
-    @RequiresHeader("Content-Type")
-    ResponseEntity<SearchResponse> find(@Body MultiValueMap<String, Object> data);
+    ResponseEntity<SearchResponse> findByHistogramWithLimit(@Body List<Float> histogram, @Path int limit);
 
     @Post("/find/{limit}")
     @RequiresHeader("Content-Type")
-    ResponseEntity<SearchResponse> findWithLimit(@Path int limit, @Body byte[] data);
+    ResponseEntity<SearchResponse> findWithLimit(@Body MultiValueMap<String, Object> data, @Path int limit);
 
     void setRootUrl(String rootUrl);
     String getRootUrl();

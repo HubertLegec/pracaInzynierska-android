@@ -15,4 +15,12 @@
     <string name="load_metadata_error">Error occurred during loading metadata from server. Check your network connection and try again.</string>
     <string name="server_unavailable_message">Wrong server address or server is unavailable</string>
     <string name="unexpected_error_message">Unexpected error occurred during fetching metadata from server</string>
+    <string name="querying_method">Querying method</string>
+    <string name="image">Image</string>
+    <string name="histogram">Histogram</string>
+    <string name="connection_test">Connection Test</string>
+    <string name="server_address">Server address:</string>
+    <string name="reload_metadata">Reload metadata</string>
+    <string name="resultListMaxSize">Result list max size:</string>
+    <string name="is_metadata_loaded">Is metadata loaded</string>
 </resources>

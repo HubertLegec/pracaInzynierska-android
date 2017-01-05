@@ -7,13 +7,12 @@
     android:background="@color/primary_light">
 
     <TextView
-        android:text="Server address:"
+        android:text="@string/server_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView2"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="18sp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:textColor="@color/primary" />
 
     <EditText
@@ -30,8 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/queryingSwitch"
-        android:textOff="Image"
-        android:textOn="Histogram"
+        android:textOff="@string/image"
+        android:textOn="@string/histogram"
         android:thumbTint="@color/primary"
         android:trackTint="@color/accent"
         android:showText="true"
@@ -39,14 +38,31 @@
         android:checked="false"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:splitTrack="false"
-        style="@*android:style/Widget.Holo.Light.CompoundButton.Switch"
-        android:text="Querying method"
+        android:text="@string/querying_method"
         android:textSize="18sp"
         android:layout_marginBottom="30dp"
         android:textColor="@color/primary" />
 
     <TextView
-        android:text="Connection Test"
+        android:id="@+id/limitLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/resultListMaxSize"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/primary" />
+
+    <SeekBar
+        android:id="@+id/limitSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:max="20"
+        android:theme="@style/Widget.AppCompat.SeekBar.Discrete"/>
+
+    <TextView
+        android:text="@string/connection_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView3"
@@ -76,12 +92,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/loadedCheckbox"
-        android:text="Is metadata loaded"
+        android:text="@string/is_metadata_loaded"
         android:clickable="false"
         android:textColor="@color/primary" />
 
     <Button
-        android:text="Reload metadata"
+        android:text="@string/reload_metadata"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/reloadButton"

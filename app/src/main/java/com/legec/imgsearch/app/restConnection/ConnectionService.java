@@ -78,8 +78,9 @@ public class ConnectionService {
         MultiValueMap<String, Object> mvMap = new LinkedMultiValueMap<>();
         mvMap.add("image", image);
         try {
+            int limit = settings.getResponseLimit();
             restClient.setHeader("Content-Type", MediaType.MULTIPART_FORM_DATA);
-            return restClient.find(mvMap)
+            return restClient.findWithLimit(mvMap, limit)
                     .getBody()
                     .getImages();
         } catch (Exception e) {
@@ -90,7 +91,8 @@ public class ConnectionService {
 
     public List<ImageDetails> findByHistogram(List<Float> histogram) {
         try {
-            return restClient.findByHistogram(histogram)
+            int limit = settings.getResponseLimit();
+            return restClient.findByHistogramWithLimit(histogram, limit)
                     .getBody()
                     .getImages();
         } catch (Exception e) {

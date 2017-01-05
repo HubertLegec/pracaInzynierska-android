@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true">
         <activity
-            android:name="activity.StartActivity_"
+            android:name=".activity.StartActivity_"
             android:noHistory="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -31,17 +31,14 @@
         <activity
             android:name=".activity.MenuActivity_"
             android:label="@string/app_name"
-            android:configChanges="orientation"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.SettingsActivity_"
             android:label="@string/app_name"
-            android:configChanges="orientation"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.ImagePreviewActivity_"
             android:label="@string/app_name"
-            android:configChanges="orientation"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <provider

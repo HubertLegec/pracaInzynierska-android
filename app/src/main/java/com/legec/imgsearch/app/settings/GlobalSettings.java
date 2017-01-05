@@ -30,7 +30,8 @@ public class GlobalSettings {
     private static final String EXTRACTOR_TYPE_KEY = "descriptorType";
     private static final String MATCHER_TYPE_KEY = "matcherType";
     private static final String MATCHER_NORM_KEY = "matcherNorm";
-    private static final String QUERYING_METHOD_CHANGE = "queryingMethod";
+    private static final String QUERYING_METHOD_KEY = "queryingMethod";
+    private static final String RESPONSE_LIMIT_KEY = "responseLimit";
     @StringRes(R.string.default_server_address)
     String defaultServer;
     @StringRes(R.string.preference_file_key)
@@ -50,26 +51,17 @@ public class GlobalSettings {
     }
 
     /**
-     * Returns server address set by user.
-     * If not present default value from resources is returned.
+     * Returns server address set by user or default value if not set.
      * @return Application server address
      */
     public String getServerAddress() {
         return preferences.getString(SERVER_ADDRESS_KEY, defaultServer);
     }
 
-    /**
-     * Stores server address in SharedPreferences. If given string is null or is empty nothing happens.
-     * @param address Server address. Should not be null or empty.
-     */
     public void setServerAddress(String address) {
         setStringProperty(SERVER_ADDRESS_KEY, address);
     }
 
-    /**
-     * Checks if metadata from server has been loaded.
-     * @return true if metadata has been loaded, false otherwise
-     */
     public boolean isMetadataLoaded() {
         return preferences.getBoolean(METADATA_LOADED_KEY, false);
     }
@@ -113,7 +105,7 @@ public class GlobalSettings {
      */
     public void setQueryingMethod(boolean method) {
         Editor editor = preferences.edit();
-        editor.putBoolean(QUERYING_METHOD_CHANGE, method);
+        editor.putBoolean(QUERYING_METHOD_KEY, method);
         editor.apply();
     }
 
@@ -122,7 +114,7 @@ public class GlobalSettings {
      * @return false if querying by image, true if by histogram
      */
     public boolean getQueryingMethod() {
-        return preferences.getBoolean(QUERYING_METHOD_CHANGE, false);
+        return preferences.getBoolean(QUERYING_METHOD_KEY, false);
     }
 
     /**
@@ -146,6 +138,14 @@ public class GlobalSettings {
     public void setVocabulary(Vocabulary vocabulary) throws IOException {
         vocabularyFileService.saveVocabularyToFile(vocabulary);
         this.vocabulary = vocabulary;
+    }
+
+    public int getResponseLimit() {
+        return preferences.getInt(RESPONSE_LIMIT_KEY, 4);
+    }
+
+    public void setResponseLimit(int limit) {
+        setIntProperty(RESPONSE_LIMIT_KEY, limit);
     }
 
     private OpenCvConfig loadConfigFromPreferences() {
