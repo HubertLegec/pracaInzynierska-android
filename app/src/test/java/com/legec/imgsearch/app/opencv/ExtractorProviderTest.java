@@ -1,6 +1,5 @@
 package com.legec.imgsearch.app.opencv;
 
-
 import android.content.Context;
 import android.os.Build;
 
@@ -19,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)

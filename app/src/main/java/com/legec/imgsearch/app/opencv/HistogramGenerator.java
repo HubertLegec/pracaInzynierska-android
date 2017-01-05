@@ -27,11 +27,7 @@ class HistogramGenerator {
     private BOWImgDescriptorExtractor descriptorExtractor;
     private int vocabularySize;
 
-    /**
-     * Create generator instance
-     * @param vocabulary vocabulary fetched from server
-     * @param extractor
-     */
+
     HistogramGenerator(Vocabulary vocabulary, Feature2D extractor, DescriptorMatcher matcher) {
         this.extractor = extractor;
         descriptorExtractor = new BOWImgDescriptorExtractor(extractor, matcher);
@@ -40,11 +36,6 @@ class HistogramGenerator {
         descriptorExtractor.setVocabulary(vocabularyMat);
     }
 
-    /**
-     * Creates histogram for given image.
-     * @param image Image as {@link Mat} object. It should be grayscale image
-     * @return image histogram
-     */
     List<Float> getHistogramForImage(Mat image) {
         KeyPointVector keyPointVector = new KeyPointVector();
         extractor.detect(image, keyPointVector);
