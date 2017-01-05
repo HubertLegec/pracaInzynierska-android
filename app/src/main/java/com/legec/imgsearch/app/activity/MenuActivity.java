@@ -91,17 +91,19 @@ public class MenuActivity extends Activity {
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
             imageSaver.setGalleryImage(selectedImage);
-            ImagePreviewActivity_.intent(this)
-                    .extra("imageUri", selectedImage)
-                    .start();
+            openImagePreview(selectedImage);
         } else if (requestCode == RESULT_TAKE_PICTURE && resultCode == RESULT_OK) {
             imageSaver.galleryAddPic();
-            ImagePreviewActivity_.intent(this)
-                    .extra("imageUri", photoUri)
-                    .start();
+            openImagePreview(photoUri);
         } else {
             Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void openImagePreview(Uri selectedImage) {
+        ImagePreviewActivity_.intent(this)
+                .extra("imageUri", selectedImage)
+                .start();
     }
 
     @Override

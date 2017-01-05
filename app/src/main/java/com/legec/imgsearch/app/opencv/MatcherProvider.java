@@ -6,6 +6,7 @@ import com.legec.imgsearch.app.restConnection.dto.OpenCvConfig;
 import org.androidannotations.annotations.EBean;
 import org.bytedeco.javacpp.opencv_features2d.BFMatcher;
 import org.bytedeco.javacpp.opencv_features2d.DescriptorMatcher;
+import org.bytedeco.javacpp.opencv_features2d.FlannBasedMatcher;
 
 
 /**
@@ -24,6 +25,8 @@ class MatcherProvider {
         switch (name) {
             case "BFMatcher":
                 return getBFMatcher(openCvConfig);
+            case "FlannBasedMatcher":
+                return new FlannBasedMatcher();
             default:
                 throw new NotImplementedYetException("Matcher " + name + " not implemented yet");
         }
