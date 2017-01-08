@@ -11,15 +11,11 @@ import android.os.Bundle;
  * Shows an error message dialog.
  */
 public class ErrorDialog extends DialogFragment {
+    public static final String ARG_MESSAGE = "message";
 
-    private static final String ARG_MESSAGE = "message";
-
-    public static ErrorDialog newInstance(String message) {
-        ErrorDialog dialog = new ErrorDialog();
-        Bundle args = new Bundle();
-        args.putString(ARG_MESSAGE, message);
-        dialog.setArguments(args);
-        return dialog;
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
     }
 
     @Override

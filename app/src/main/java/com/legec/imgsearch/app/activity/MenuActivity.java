@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
@@ -126,7 +127,10 @@ public class MenuActivity extends Activity {
     }
 
     private void showErrorDialog(int resourceId) {
-        ErrorDialog.newInstance(getString(resourceId))
-                .show(getFragmentManager(), DIALOG);
+        ErrorDialog dialog = new ErrorDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString(ErrorDialog.ARG_MESSAGE, getString(resourceId));
+        dialog.setArguments(bundle);
+        dialog.show(getFragmentManager(), DIALOG);
     }
 }
