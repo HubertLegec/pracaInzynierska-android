@@ -9,4 +9,9 @@
             android:src="@mipmap/logo" />
     </item>
 
+    <item>
+        <bitmap android:src="@mipmap/name"
+            android:gravity="bottom" />
+    </item>
+
 </layer-list>
