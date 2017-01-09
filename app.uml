@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.legec.imgsearch.app</OriginalElement>
+  <nodes>
+    <node x="1100.923848504227" y="2111.539140252023">com.legec.imgsearch.app.activity.ResultActivity</node>
+    <node x="586.6036849346483" y="1920.968990752295">com.legec.imgsearch.app.opencv.ExtractorProvider</node>
+    <node x="928.3276641591029" y="1720.4776887608339">com.legec.imgsearch.app.restConnection.RestClient</node>
+    <node x="694.8098918898447" y="1701.2317231640611">com.legec.imgsearch.app.opencv.MatcherProvider</node>
+    <node x="965.2040414169068" y="1632.0209135373207">com.legec.imgsearch.app.restConnection.ConnectionService</node>
+    <node x="955.3323578088098" y="2279.4713448746356">com.legec.imgsearch.app.result.ResultListAdapter</node>
+    <node x="440.677319776742" y="2250.2406417112293">com.legec.imgsearch.app.restConnection.dto.SearchResponse</node>
+    <node x="944.7399459338425" y="1433.7525141496192">com.legec.imgsearch.app.activity.SettingsActivity</node>
+    <node x="1006.062095994301" y="1239.0413157317414">com.legec.imgsearch.app.settings.VocabularyFileService</node>
+    <node x="605.1260087046448" y="1484.305601120451">com.legec.imgsearch.app.opencv.OpenCvService</node>
+    <node x="692.8988065770277" y="2283.09789042577">com.legec.imgsearch.app.restConnection.dto.ImageDetails</node>
+    <node x="393.90341347286414" y="2060.7643331587697">com.legec.imgsearch.app.activity.StartActivity</node>
+    <node x="632.6649318582097" y="2208.5737013746802">com.legec.imgsearch.app.result.ResultItemView</node>
+    <node x="756.4438502673797" y="1509.1686346915149">com.legec.imgsearch.app.restConnection.callbacks.LoadMetadataCallback</node>
+    <node x="1068.448502083575" y="1347.6910991347559">com.legec.imgsearch.app.settings.GlobalSettings</node>
+    <node x="846.9974898273455" y="2199.986708155034">com.legec.imgsearch.app.result.DetailsDialogCallback</node>
+    <node x="476.6658592116422" y="1388.8114361520413">com.legec.imgsearch.app.opencv.HistogramGenerator</node>
+    <node x="807.450059333032" y="2136.324850356038">com.legec.imgsearch.app.activity.ImagePreviewActivity</node>
+    <node x="862.445175374736" y="2059.250862526398">com.legec.imgsearch.app.result.ResultDetailsDialog</node>
+    <node x="824.2104003991558" y="1905.4267480395972">com.legec.imgsearch.app.utils.ImageResource</node>
+    <node x="666.8088043658893" y="1361.6883968872075">com.legec.imgsearch.app.exception.MetadataNotLoadedException</node>
+    <node x="828.4192495682252" y="1243.8342664410588">com.legec.imgsearch.app.restConnection.dto.Vocabulary</node>
+    <node x="788.1337666961548" y="1306.478387247732">com.legec.imgsearch.app.restConnection.dto.OpenCvConfig</node>
+    <node x="852.9591019291623" y="1982.7983405602167">com.legec.imgsearch.app.utils.ImageSaver</node>
+    <node x="436.99571222463646" y="1692.2860989910962">com.legec.imgsearch.app.exception.ImageLoadingException</node>
+    <node x="403.9165227661216" y="1791.0227718858082">com.legec.imgsearch.app.exception.InvalidExtractorNameException</node>
+    <node x="613.2777213969748" y="2077.2214780902013">com.legec.imgsearch.app.activity.MenuActivity</node>
+    <node x="411.07569353512275" y="1979.7118513797263">com.legec.imgsearch.app.utils.PermissionManager</node>
+    <node x="400.1167059987946" y="2153.6790459154645">com.legec.imgsearch.app.utils.ErrorDialog</node>
+    <node x="716.9066321818199" y="1809.520174142148">com.legec.imgsearch.app.exception.NotImplementedYetException</node>
+    <node x="1105.1584095204603" y="1980.155266464566">com.legec.imgsearch.app.result.ResultService</node>
+    <node x="837.4603807052127" y="1569.837966990489">com.legec.imgsearch.app.restConnection.callbacks.NoParamsCallback</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.legec.imgsearch.app.activity.ResultActivity" target="com.legec.imgsearch.app.result.ResultService">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.SettingsActivity" target="com.legec.imgsearch.app.restConnection.ConnectionService">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.StartActivity" target="com.legec.imgsearch.app.activity.MenuActivity">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.SettingsActivity" target="com.legec.imgsearch.app.restConnection.callbacks.LoadMetadataCallback">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.MenuActivity" target="com.legec.imgsearch.app.utils.ImageSaver">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.settings.GlobalSettings" target="com.legec.imgsearch.app.restConnection.dto.OpenCvConfig">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.restConnection.ConnectionService" target="com.legec.imgsearch.app.settings.GlobalSettings">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.opencv.OpenCvService" target="com.legec.imgsearch.app.exception.ImageLoadingException">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.settings.GlobalSettings" target="com.legec.imgsearch.app.restConnection.dto.Vocabulary">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.SettingsActivity" target="com.legec.imgsearch.app.settings.GlobalSettings">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.MenuActivity" target="com.legec.imgsearch.app.activity.ImagePreviewActivity">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.ResultActivity" target="com.legec.imgsearch.app.result.ResultDetailsDialog">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.restConnection.dto.SearchResponse" target="com.legec.imgsearch.app.restConnection.dto.ImageDetails">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.SettingsActivity" target="com.legec.imgsearch.app.restConnection.callbacks.NoParamsCallback">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.opencv.ExtractorProvider" target="com.legec.imgsearch.app.exception.InvalidExtractorNameException">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.opencv.OpenCvService" target="com.legec.imgsearch.app.exception.MetadataNotLoadedException">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.MenuActivity" target="com.legec.imgsearch.app.utils.PermissionManager">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.ImagePreviewActivity" target="com.legec.imgsearch.app.activity.ResultActivity">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.ResultActivity" target="com.legec.imgsearch.app.result.ResultListAdapter">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.utils.ImageSaver" target="com.legec.imgsearch.app.utils.ImageResource">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.opencv.OpenCvService" target="com.legec.imgsearch.app.opencv.ExtractorProvider">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.restConnection.ConnectionService" target="com.legec.imgsearch.app.restConnection.RestClient">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.settings.GlobalSettings" target="com.legec.imgsearch.app.settings.VocabularyFileService">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.opencv.ExtractorProvider" target="com.legec.imgsearch.app.exception.NotImplementedYetException">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.result.ResultListAdapter" target="com.legec.imgsearch.app.restConnection.dto.ImageDetails">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.result.ResultService" target="com.legec.imgsearch.app.settings.GlobalSettings">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.opencv.MatcherProvider" target="com.legec.imgsearch.app.exception.NotImplementedYetException">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.result.ResultListAdapter" target="com.legec.imgsearch.app.result.ResultItemView">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.settings.GlobalSettings" target="com.legec.imgsearch.app.exception.MetadataNotLoadedException">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.MenuActivity" target="com.legec.imgsearch.app.utils.ErrorDialog">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.opencv.OpenCvService" target="com.legec.imgsearch.app.settings.GlobalSettings">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.result.ResultService" target="com.legec.imgsearch.app.utils.ImageSaver">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.ResultActivity" target="com.legec.imgsearch.app.result.DetailsDialogCallback">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.opencv.OpenCvService" target="com.legec.imgsearch.app.opencv.HistogramGenerator">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.result.ResultService" target="com.legec.imgsearch.app.opencv.OpenCvService">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.activity.SettingsActivity" target="com.legec.imgsearch.app.opencv.OpenCvService">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.result.ResultService" target="com.legec.imgsearch.app.restConnection.ConnectionService">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.legec.imgsearch.app.opencv.OpenCvService" target="com.legec.imgsearch.app.opencv.MatcherProvider">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6470588235294119" x="964.8181818181816" y="1801.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
