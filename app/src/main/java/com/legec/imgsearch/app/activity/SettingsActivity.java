@@ -3,9 +3,11 @@ package com.legec.imgsearch.app.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Color;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -47,6 +49,8 @@ public class SettingsActivity extends Activity {
     SeekBar limitSeekBar;
     @ViewById
     TextView limitLabel;
+    @ViewById
+    ProgressBar reloadProgress;
     @StringRes
     String resultListMaxSize;
     @Bean
@@ -84,6 +88,7 @@ public class SettingsActivity extends Activity {
 
     @Click(R.id.reloadButton)
     void onReloadMetadataClick() {
+        reloadProgress.setVisibility(View.VISIBLE);
         updateServerAddress();
         final Activity activity = this;
         loadedCheckbox.setChecked(false);
@@ -96,7 +101,6 @@ public class SettingsActivity extends Activity {
             @Override
             public void onSuccess(Vocabulary vocabulary, OpenCvConfig openCvConfig) {
                 try {
-
                     settings.setOpenCvConfig(openCvConfig);
                     settings.setMetadataLoaded(true);
                     settings.setVocabulary(vocabulary);
@@ -124,6 +128,7 @@ public class SettingsActivity extends Activity {
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, null)
                 .show();
+        reloadProgress.setVisibility(View.GONE);
     }
 
     @SeekBarProgressChange(R.id.limitSeekBar)
@@ -163,6 +168,7 @@ public class SettingsActivity extends Activity {
 
     @UiThread
     void updateMetadataLoaded() {
+        reloadProgress.setVisibility(View.GONE);
         loadedCheckbox.setChecked(settings.isMetadataLoaded());
     }
 
