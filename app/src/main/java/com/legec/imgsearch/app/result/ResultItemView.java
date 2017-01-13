@@ -16,13 +16,13 @@ import org.androidannotations.annotations.ViewById;
 @EViewGroup(R.layout.result_element)
 public class ResultItemView extends LinearLayout {
     @ViewById
-    public TextView matchRatio;
+    TextView matchRatio;
     @ViewById
-    public TextView name;
+    TextView name;
     @ViewById
-    public ImageView imageView;
+    ImageView imageView;
     @ViewById
-    public ProgressBar progress;
+    ProgressBar progress;
 
 
     public ResultItemView(Context context) {
@@ -32,9 +32,5 @@ public class ResultItemView extends LinearLayout {
     public void bind(ImageDetails entry) {
         name.setText("Name: " + entry.getName());
         matchRatio.setText("Match rate: " + String.format("%.3f", entry.getMatchRate()));
-    }
-
-    public ProgressBar getProgress() {
-        return progress;
     }
 }

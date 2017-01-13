@@ -24,7 +24,9 @@ public class ResultDetailsDialog {
     public ResultDetailsDialog(ImageDetails details, Activity activity, DetailsDialogCallback callback) {
         AlertDialog.Builder builder = getBuilder(activity, callback);
         dialog = builder.create();
-        View dialogLayout = activity.getLayoutInflater().inflate(R.layout.result_details, null);
+        View dialogLayout = activity
+                .getLayoutInflater()
+                .inflate(R.layout.result_details, null);
         ProgressBar progressBar = (ProgressBar) dialogLayout.findViewById(R.id.detailsProgress);
         dialog.setView(dialogLayout);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -65,6 +67,7 @@ public class ResultDetailsDialog {
                         })
                         .fitCenter()
                         .crossFade()
+                        .error(R.mipmap.error)
                         .into(image);
             }
         });

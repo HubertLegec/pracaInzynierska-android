@@ -13,7 +13,6 @@
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
         android:largeHeap="true">
         <activity
             android:name=".activity.StartActivity_"
@@ -26,20 +25,16 @@
         </activity>
         <activity
             android:name=".activity.ResultActivity_"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:label="Results" />
         <activity
             android:name=".activity.MenuActivity_"
-            android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.SettingsActivity_"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:label="Settings" />
         <activity
             android:name=".activity.ImagePreviewActivity_"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:label="Preview" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

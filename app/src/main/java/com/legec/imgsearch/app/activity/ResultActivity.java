@@ -8,6 +8,7 @@ import android.util.Log;
 import android.util.TimingLogger;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.legec.imgsearch.app.result.ResultService;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
@@ -37,14 +39,19 @@ public class ResultActivity extends ListActivity {
     ListView list;
     @ViewById
     ProgressBar progress;
+    @ViewById
+    LinearLayout listContainer;
     @Bean
     ResultListAdapter resultListAdapter;
     @Bean
     ResultService resultService;
+    @ViewById
+    LinearLayout empty;
 
     @AfterViews
     void bindAdapter() {
         setListAdapter(resultListAdapter);
+        list.setEmptyView(empty);
         list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         sendImage();
         final Activity activity = this;
@@ -67,7 +74,7 @@ public class ResultActivity extends ListActivity {
         });
     }
 
-    @Background(id = "sendTask")
+    @Background
     void sendImage() {
         try {
             TimingLogger timings = new TimingLogger("ImgSearchTiming", "searchRequest");
@@ -81,7 +88,6 @@ public class ResultActivity extends ListActivity {
             resultListAdapter.addAll(result);
             refreshView();
         } catch (Exception e) {
-            resultListAdapter.clear();
             refreshView();
             showError(e.getMessage());
         }
@@ -90,12 +96,20 @@ public class ResultActivity extends ListActivity {
     @UiThread
     void refreshView(){
         progress.setVisibility(View.GONE);
+        listContainer.setVisibility(View.VISIBLE);
         resultListAdapter.notifyDataSetChanged();
     }
 
     @UiThread
     void showError(String message) {
         Toast.makeText(this, "Connection error: " + message, Toast.LENGTH_LONG).show();
+    }
+
+    @Click(R.id.tryAgain)
+    void onTryAgainClick() {
+        listContainer.setVisibility(View.GONE);
+        progress.setVisibility(View.VISIBLE);
+        sendImage();
     }
 
     private void openWebPage(String url) {
