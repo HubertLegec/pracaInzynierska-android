@@ -8,8 +8,12 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.restConnection.dto.ImageDetails;
 
@@ -21,9 +25,10 @@ public class ResultDetailsDialog {
         AlertDialog.Builder builder = getBuilder(activity, callback);
         dialog = builder.create();
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.result_details, null);
+        ProgressBar progressBar = (ProgressBar) dialogLayout.findViewById(R.id.detailsProgress);
         dialog.setView(dialogLayout);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setOnShowDialog(details, activity);
+        setOnShowDialog(details, activity, progressBar);
     }
 
     private AlertDialog.Builder getBuilder(Context context, final DetailsDialogCallback callback) {
@@ -38,15 +43,27 @@ public class ResultDetailsDialog {
                 .setNegativeButton("Back", listener);
     }
 
-    private void setOnShowDialog(final ImageDetails details, final Context context) {
+    private void setOnShowDialog(final ImageDetails details, final Context context, final ProgressBar progress) {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface d) {
                 ImageView image = (ImageView) dialog.findViewById(R.id.image);
                 Glide.with(context)
                         .load(details.getUrl())
+                        .listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                progress.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                progress.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
                         .fitCenter()
-                        .placeholder(R.drawable.progress_spinner)
                         .crossFade()
                         .into(image);
             }

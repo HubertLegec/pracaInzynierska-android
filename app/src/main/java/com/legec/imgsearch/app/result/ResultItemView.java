@@ -3,6 +3,7 @@ package com.legec.imgsearch.app.result;
 import android.content.Context;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.legec.imgsearch.app.R;
@@ -20,6 +21,8 @@ public class ResultItemView extends LinearLayout {
     public TextView name;
     @ViewById
     public ImageView imageView;
+    @ViewById
+    public ProgressBar progress;
 
 
     public ResultItemView(Context context) {
@@ -29,5 +32,9 @@ public class ResultItemView extends LinearLayout {
     public void bind(ImageDetails entry) {
         name.setText("Name: " + entry.getName());
         matchRatio.setText("Match rate: " + String.format("%.3f", entry.getMatchRate()));
+    }
+
+    public ProgressBar getProgress() {
+        return progress;
     }
 }

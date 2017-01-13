@@ -9,6 +9,7 @@ import android.util.TimingLogger;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.legec.imgsearch.app.R;
@@ -34,6 +35,8 @@ public class ResultActivity extends ListActivity {
     private static final String TAG = "ResultActivity";
     @ViewById
     ListView list;
+    @ViewById
+    ProgressBar progress;
     @Bean
     ResultListAdapter resultListAdapter;
     @Bean
@@ -78,12 +81,15 @@ public class ResultActivity extends ListActivity {
             resultListAdapter.addAll(result);
             refreshView();
         } catch (Exception e) {
+            resultListAdapter.clear();
+            refreshView();
             showError(e.getMessage());
         }
     }
 
     @UiThread
     void refreshView(){
+        progress.setVisibility(View.GONE);
         resultListAdapter.notifyDataSetChanged();
     }
 

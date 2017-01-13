@@ -8,11 +8,20 @@
     android:padding="5dp"
     android:background="@drawable/result_list_selector">
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:srcCompat="@android:drawable/ic_menu_gallery"
-            android:id="@+id/imageView" />
+            android:layout_height="100dp">
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:visibility="visible"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp" />
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:srcCompat="@android:drawable/ic_menu_gallery"
+                    android:id="@+id/imageView" />
+        </RelativeLayout>
 
         <LinearLayout
             android:orientation="vertical"
