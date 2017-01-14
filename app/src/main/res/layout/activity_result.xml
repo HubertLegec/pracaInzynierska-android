@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_light">
+    android:background="@color/icons">
 
     <ProgressBar
         android:id="@+id/progress"
@@ -22,7 +22,7 @@
             android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@drawable/result_list_divider"
+            android:divider="@drawable/list_divider"
             android:dividerHeight="2dp" />
 
         <LinearLayout
@@ -43,8 +43,8 @@
                 android:layout_height="0px"
                 android:layout_weight="1"
                 android:text="@string/try_again"
-                android:background="@drawable/menu_button_background"
-                android:textColor="@color/primary_light"/>
+                android:background="@drawable/button_background"
+                android:textColor="@color/icons"/>
         </LinearLayout>
     </LinearLayout>
 

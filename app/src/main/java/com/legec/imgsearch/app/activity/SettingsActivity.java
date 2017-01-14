@@ -2,7 +2,6 @@ package com.legec.imgsearch.app.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -29,6 +28,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.SeekBarProgressChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.ColorRes;
 import org.androidannotations.annotations.res.StringRes;
 
 import java.io.IOException;
@@ -59,6 +59,10 @@ public class SettingsActivity extends Activity {
     GlobalSettings settings;
     @Bean
     OpenCvService openCvService;
+    @ColorRes(R.color.red)
+    int red;
+    @ColorRes(R.color.green)
+    int green;
 
 
     @AfterViews
@@ -76,12 +80,12 @@ public class SettingsActivity extends Activity {
         connectionService.checkServerStatus(new NoParamsCallback() {
             @Override
             public void onSuccess() {
-                updateButtonColor(Color.GREEN);
+                updateButtonColor(green);
             }
 
             @Override
             public void onError(String message) {
-                updateButtonColor(Color.RED);
+                updateButtonColor(red);
             }
         });
     }
@@ -102,8 +106,8 @@ public class SettingsActivity extends Activity {
             public void onSuccess(Vocabulary vocabulary, OpenCvConfig openCvConfig) {
                 try {
                     settings.setOpenCvConfig(openCvConfig);
-                    settings.setMetadataLoaded(true);
                     settings.setVocabulary(vocabulary);
+                    settings.setMetadataLoaded(true);
                     updateMetadataLoaded();
                 } catch (IOException e) {
                     onSaveLoadedMetadataError(activity);

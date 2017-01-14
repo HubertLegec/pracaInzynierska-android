@@ -1,120 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/primary_light">
+    android:background="@color/icons">
+
     <LinearLayout
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="@drawable/list_divider"
+        android:orientation="vertical"
         android:padding="20dp"
-        android:background="@color/primary_light">
+        android:showDividers="middle">
 
-        <TextView
-            android:text="@string/server_address"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="18sp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/primary" />
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/serverAddress"
-            android:layout_marginBottom="30dp"
-            android:textColor="@color/primary"
-            android:textColorLink="@color/accent" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/server_address"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/serverAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textUri"
+                android:theme="@style/TextEditStyle" />
+
+        </LinearLayout>
 
         <Switch
+            android:id="@+id/queryingSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/queryingSwitch"
-            android:textOff="@string/image"
-            android:textOn="@string/histogram"
-            android:thumbTint="@color/primary"
-            android:trackTint="@color/accent"
-            android:showText="true"
-            android:switchTextAppearance="@style/TextAppearance.AppCompat"
-            android:checked="false"
-            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
             android:splitTrack="false"
             android:text="@string/querying_method"
-            android:textSize="18sp"
-            android:layout_marginBottom="30dp"
-            android:textColor="@color/primary" />
-
-        <TextView
-            android:id="@+id/limitLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/resultListMaxSize"
             android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/primary_text"
             android:textSize="18sp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/primary" />
+            android:theme="@style/SwitchStyle" />
 
-        <SeekBar
-            android:id="@+id/limitSeekBar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:max="20"
-            android:theme="@style/Widget.AppCompat.SeekBar.Discrete"/>
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:text="@string/connection_test"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView3"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="18sp"
-            android:textColor="@color/primary" />
+            <TextView
+                android:id="@+id/limitLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/resultListMaxSize"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp" />
+
+            <SeekBar
+                android:id="@+id/limitSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="20"
+                android:theme="@style/SeekBarStyle" />
+
+        </LinearLayout>
 
         <Button
-            android:text="Test"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/testButton"
-            android:layout_marginBottom="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
             android:background="@color/primary_dark"
-            android:textColor="@color/primary_light" />
+            android:text="@string/test_connection"
+            android:textColor="@color/icons" />
 
-        <TextView
-            android:text="Metadata"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView4"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="18sp"
-            android:textColor="@color/primary" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
 
-        <CheckBox
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/loadedCheckbox"
-            android:text="@string/is_metadata_loaded"
-            android:clickable="false"
-            android:textColor="@color/primary" />
+            <CheckBox
+                android:id="@+id/loadedCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:text="@string/metadata_loaded"
+                android:theme="@style/CheckBoxStyle" />
 
-        <Button
-            android:text="@string/reload_metadata"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/reloadButton"
-            android:background="@color/primary_dark"
-            android:textColor="@color/primary_light" />
+            <Button
+                android:id="@+id/reloadButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primary_dark"
+                android:text="@string/reload_metadata"
+                android:textColor="@color/icons" />
 
-        <ProgressBar
-            android:id="@+id/reloadProgress"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="invisible"/>
+            <ProgressBar
+                android:id="@+id/reloadProgress"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="invisible" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>
