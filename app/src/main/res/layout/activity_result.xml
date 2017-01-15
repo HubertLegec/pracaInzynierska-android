@@ -35,7 +35,8 @@
                 android:src="@mipmap/no_images"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
-                android:layout_weight="4"/>
+                android:layout_weight="4"
+                android:layout_margin="10dp"/>
             <Button
                 android:id="@+id/tryAgain"
                 android:layout_margin="10dp"

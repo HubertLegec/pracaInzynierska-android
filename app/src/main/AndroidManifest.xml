@@ -25,16 +25,19 @@
         </activity>
         <activity
             android:name=".activity.ResultActivity_"
-            android:label="Results" />
+            android:label="Results"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".activity.MenuActivity_"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.SettingsActivity_"
-            android:label="Settings" />
+            android:label="Settings"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".activity.ImagePreviewActivity_"
-            android:label="Preview" />
+            android:label="Preview"
+            android:theme="@style/AppTheme"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
