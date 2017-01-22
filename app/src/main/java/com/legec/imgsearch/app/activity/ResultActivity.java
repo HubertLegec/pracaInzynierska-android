@@ -5,7 +5,6 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.util.TimingLogger;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -77,13 +76,11 @@ public class ResultActivity extends ListActivity {
     @Background
     void sendImage() {
         try {
-            TimingLogger timings = new TimingLogger("ImgSearchTiming", "searchRequest");
             long startTime = System.nanoTime();
             List<ImageDetails> result = resultService.sendSearchRequest();
             long endTime = System.nanoTime();
             long time = (endTime - startTime) / 1000000;
             Log.d(TAG, "search request time: " + time + " ms");
-            timings.dumpToLog();
             resultListAdapter.clear();
             resultListAdapter.addAll(result);
             refreshView();

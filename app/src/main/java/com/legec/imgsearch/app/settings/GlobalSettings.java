@@ -79,8 +79,9 @@ public class GlobalSettings {
     /**
      * Returns OpenCV config - extractor, matcher and norm type
      * @return @{@link OpenCvConfig} object with configuration parameters
+     * @throws @{@link MetadataNotLoadedException} when configuration is not present
      */
-    public OpenCvConfig getOpenCvConfig() {
+    public OpenCvConfig getOpenCvConfig() throws MetadataNotLoadedException {
         OpenCvConfig config = openCvConfig != null ? openCvConfig : loadConfigFromPreferences();
         if (!config.isValid()) {
             throw new MetadataNotLoadedException("OpenCV configuration params are not loaded yet");
@@ -120,20 +121,24 @@ public class GlobalSettings {
     /**
      * Return vocabulary. If not loaded, load it from file.
      * @return vocabulary
-     * @throws IOException when loading from file fail
+     * @throws @{@link MetadataNotLoadedException} when loading from file fail
      */
-    public Vocabulary getVocabulary() throws IOException{
+    public Vocabulary getVocabulary() throws MetadataNotLoadedException {
         if (vocabulary != null) {
             return vocabulary;
         }
-        vocabulary = vocabularyFileService.getVocabularyFromFile();
-        return vocabulary;
+        try {
+            vocabulary = vocabularyFileService.getVocabularyFromFile();
+            return vocabulary;
+        } catch (IOException e) {
+            throw new MetadataNotLoadedException("Vocabulary is not loaded yet");
+        }
     }
 
     /**
      * Save vocabulary to file and store it in class variable
      * @param vocabulary vocabulary to save
-     * @throws IOException when saving to file fail
+     * @throws @{@link IOException} when saving to file fail
      */
     public void setVocabulary(Vocabulary vocabulary) throws IOException {
         vocabularyFileService.saveVocabularyToFile(vocabulary);

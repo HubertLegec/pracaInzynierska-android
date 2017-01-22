@@ -12,7 +12,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.legec.imgsearch.app.R;
-import com.legec.imgsearch.app.opencv.OpenCvService;
 import com.legec.imgsearch.app.restConnection.ConnectionService;
 import com.legec.imgsearch.app.restConnection.callbacks.LoadMetadataCallback;
 import com.legec.imgsearch.app.restConnection.callbacks.NoParamsCallback;
@@ -57,8 +56,6 @@ public class SettingsActivity extends Activity {
     ConnectionService connectionService;
     @Bean
     GlobalSettings settings;
-    @Bean
-    OpenCvService openCvService;
     @ColorRes(R.color.red)
     int red;
     @ColorRes(R.color.green)
