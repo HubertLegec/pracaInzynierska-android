@@ -47,7 +47,7 @@ class HistogramGenerator {
         return histogramToList(histogram);
     }
 
-    private static Mat transformVocabularyToMat(Vocabulary vocabulary) {
+    static Mat transformVocabularyToMat(Vocabulary vocabulary) {
         List<List<Float>> values = vocabulary.getVocabulary();
         Mat result = null;
         for (List<Float> row : values){
