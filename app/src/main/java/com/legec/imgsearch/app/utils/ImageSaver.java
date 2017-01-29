@@ -1,6 +1,5 @@
 package com.legec.imgsearch.app.utils;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 /**
  * There is only one instance of this class in the application, it's a singleton.

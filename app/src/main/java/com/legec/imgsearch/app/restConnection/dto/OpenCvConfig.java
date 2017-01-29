@@ -1,7 +1,7 @@
 package com.legec.imgsearch.app.restConnection.dto;
 
-
 import org.apache.commons.lang3.StringUtils;
+
 
 public class OpenCvConfig {
     private String matcher_type;

@@ -1,7 +1,7 @@
 package com.legec.imgsearch.app.restConnection.dto;
 
-
 import java.util.List;
+
 
 public class Vocabulary {
     private List<List<Float>> vocabulary;

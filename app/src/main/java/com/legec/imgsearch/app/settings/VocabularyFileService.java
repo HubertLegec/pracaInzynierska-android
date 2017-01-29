@@ -1,8 +1,6 @@
 package com.legec.imgsearch.app.settings;
 
-
 import android.content.Context;
-
 import com.google.gson.Gson;
 import com.legec.imgsearch.app.restConnection.dto.Vocabulary;
 
@@ -13,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.Scanner;
+
 
 @EBean
 class VocabularyFileService {

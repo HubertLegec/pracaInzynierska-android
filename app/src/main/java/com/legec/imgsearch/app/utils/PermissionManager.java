@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
+
 @EBean
 public class PermissionManager {
     public static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;

@@ -1,6 +1,5 @@
 package com.legec.imgsearch.app.settings;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

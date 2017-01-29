@@ -1,7 +1,6 @@
 package com.legec.imgsearch.app.utils;
 
 import com.legec.imgsearch.app.restConnection.RestClient;
-
 import org.springframework.core.io.ByteArrayResource;
 
 

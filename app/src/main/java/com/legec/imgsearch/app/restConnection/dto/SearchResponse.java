@@ -1,7 +1,7 @@
 package com.legec.imgsearch.app.restConnection.dto;
 
-
 import java.util.List;
+
 
 public class SearchResponse {
     List<ImageDetails> images;

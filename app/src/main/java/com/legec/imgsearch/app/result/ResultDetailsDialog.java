@@ -1,6 +1,5 @@
 package com.legec.imgsearch.app.result;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,6 +15,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.legec.imgsearch.app.R;
 import com.legec.imgsearch.app.restConnection.dto.ImageDetails;
+
 
 public class ResultDetailsDialog {
     public static final int SHOW_BUTTON = -1;
